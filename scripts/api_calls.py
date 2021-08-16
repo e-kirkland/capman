@@ -6,11 +6,6 @@ from os.path import join, dirname
 from typing_extensions import ParamSpecArgs
 from pathlib import Path
 
-# Setting path to sleeper_api_wrapper
-module_path = os.path.abspath(os.path.join('../scripts/sleeper_api_wrapper'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
-
 # Third-party imports
 import pandas as pd
 import checkpointe as check
@@ -385,3 +380,19 @@ def get_roster_id(text):
                 pass
     
     return str(roster_id)
+
+def get_league_id():
+
+    # Getting tokens from env
+    dotenv_path = join(dirname(__file__), '../.env')
+    load_dotenv(dotenv_path)
+    db = os.environ.get('POSTGRES_DB')
+    print("DATABASE TO CONNECT TO: ", db)
+
+    query = f"SELECT * FROM SETTINGS"
+    settingsdf = pgt.df_from_postgres(query, db, 'settings')
+
+    # Getting transaction id from DataFrame
+    transaction_id = settingsdf['league_id'][0]
+
+    return transaction_id

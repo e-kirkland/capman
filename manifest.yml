@@ -1,0 +1,61 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: CapMan
+features:
+  app_home:
+    home_tab_enabled: false
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: true
+  bot_user:
+    display_name: CapMan
+    always_online: false
+  slash_commands:
+    - command: /roster
+      url: https://capmanbot.herokuapp.com/roster
+      description: Returns your current roster
+      usage_hint: Type "/roster <name-or-nickname>" to display another roster
+      should_escape: false
+    - command: /salary-reset
+      url: https://capmanbot.herokuapp.com/salary-reset
+      description: Starts the process of resetting league data
+      usage_hint: DO NOT USE unless admin.
+      should_escape: false
+    - command: /cap
+      url: https://capmanbot.herokuapp.com/cap
+      description: Shows cap space
+      usage_hint: Type "/cap <name-or-nickname>" to see other team's cap space.
+      should_escape: false
+    - command: /initialize
+      url: https://capmanbot.herokuapp.com/initialize
+      description: Initializes with league ID
+      usage_hint: Type "/initialize <leagueID salaryCap rosterMin rosterMax>" to set
+        up your league
+      should_escape: false
+oauth_config:
+  scopes:
+    user:
+      - chat:write
+      - files:write
+      - files:read
+    bot:
+      - channels:history
+      - chat:write
+      - commands
+      - im:write
+      - reactions:read
+      - files:read
+      - files:write
+settings:
+  event_subscriptions:
+    request_url: https://capmanbot.herokuapp.com/slack/events
+    bot_events:
+      - file_change
+      - file_created
+      - file_public
+      - file_shared
+      - message.channels
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

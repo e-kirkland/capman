@@ -116,3 +116,46 @@ def df_from_postgres(query, database, table):
 
     return df
 
+def store_most_recent_transaction(leagueID, transaction_id):
+
+    commands = (
+    f"""
+    UPDATE settings
+       SET transaction_id='{str(transaction_id)}'
+     WHERE league_id={int(leagueID)}
+    """
+    )
+
+    try:
+
+        # storing db_path
+        # Getting tokens from env
+        dotenv_path = join(dirname(__file__), '../.env')
+        load_dotenv(dotenv_path)
+        db_path = os.environ.get('POSTGRES_CONTAINER')
+        print("CONNECTING TO POSTGRES AT: ", str(db_path))
+        db = os.environ.get('POSTGRES_DB')
+        print("DATABASE TO CONNECT TO: ", db)
+
+        # Accessing table in posgres db
+        options = postgres_connect(db_path, db)
+        cursor = options[1]
+        engine = options[0]
+        conn = engine.raw_connection()
+
+        # Create tables one by one
+        for command in commands:
+            cursor.execute(command)
+
+        # Close communication
+        cursor.close()
+
+        # Commit changes
+        conn.commit()
+
+    except Exception as e:
+        print(f"ERROR IN CREATING TABLES: {e}")
+
+    finally:
+        if conn is not None:
+            conn.close()
