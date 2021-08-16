@@ -46,7 +46,7 @@ league_users = {
     "UBV333PT8": 6,
     "U236W3RAM": 7,
     "U232X98MS": 8,
-    "U9FL1AP2B": 10,
+    "U9FL1AP2B": 9,
 }
 
 # Recognize files created
