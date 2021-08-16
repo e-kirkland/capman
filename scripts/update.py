@@ -214,8 +214,7 @@ def check_compilance():
     for n in range(0, len(roster_ids)):
         id = roster_ids[n]
         # UNCOMMENT FOR DEV
-        # team_name = teamsdf['display_name'][n]
-        team_name = teamsdf['roster'][n]
+        team_name = teamsdf['display_name'][n]
 
         # Get players for this roster
         query = f"SELECT * FROM players WHERE roster_id='{id}'"
