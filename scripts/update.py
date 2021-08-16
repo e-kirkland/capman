@@ -213,7 +213,7 @@ def check_compilance():
     problemdata = []
     for n in range(0, len(roster_ids)):
         id = roster_ids[n]
-        # UNCOMMENT FOR DEV
+
         team_name = teamsdf['display_name'][n]
 
         # Get players for this roster
