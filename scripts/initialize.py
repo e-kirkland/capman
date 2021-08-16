@@ -63,9 +63,11 @@ def setup_database():
         load_dotenv(dotenv_path)
         db_path = os.environ.get('POSTGRES_CONTAINER')
         print("CONNECTING TO POSTGRES AT: ", str(db_path))
+        db = os.environ.get('POSTGRES_DB')
+        print("DATABASE TO CONNECT TO: ", db)
 
         # Accessing table in posgres db
-        options = pgt.postgres_connect(db_path, 'ddn2vj034rlaj2')
+        options = pgt.postgres_connect(db_path, db)
         cursor = options[1]
         engine = options[0]
         conn = engine.raw_connection()
@@ -108,16 +110,11 @@ def populate_tables(leagueID, salaryCap, rosterMin, rosterMax):
         print("SETTINGSDF: ", settingsdf.head())
 
         # Getting database name
-        parent_path = dirname(__file__)
         dotenv_path = join(dirname(__file__), '../.env')
 
         print("PATH TO LOOKUP: ", dotenv_path)
         load_dotenv(dotenv_path)
-        db = os.environ.get('POSTGRES_DATABASE')
-
-        # dotenv_path = join(dirname(__file__), '../.env')
-        # load_dotenv(dotenv_path)
-        # db = os.environ.get('POSTGRES_DATABASE')
+        db = os.environ.get('POSTGRES_DB')
 
         pgt.df_to_postgres(settingsdf, db, 'settings', method='replace')
 

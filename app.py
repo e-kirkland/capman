@@ -4,6 +4,7 @@ import re
 import sys, os
 import json
 from os.path import join, dirname
+from datetime import datetime
 
 # Third party imports
 from flask import Flask, request, jsonify, Response, make_response
@@ -13,15 +14,18 @@ import redis
 import slack
 from slackeventsapi import SlackEventAdapter
 from dotenv import load_dotenv
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 
 
 # Local imports
 from scripts import api_calls as api
 from scripts import initialize as init
+from scripts import update as up
 
 # Instantiating app
 app = Flask(__name__)
-port = int(os.environ.get("PORT", 5000))
+port = int(os.environ.get("PORT", 3000))
 # Enable CORS
 cors = CORS(app)
 
@@ -31,6 +35,7 @@ load_dotenv(dotenv_path)
 bot_token = os.environ.get('SLACK_BOT_TOKEN')
 user_token = os.environ.get('SLACK_USER_TOKEN')
 secret = os.environ.get('SLACK_SECRET')
+alert_channel = os.environ.get('ALERT_CHANNEL')
 
 print("TOKENS: ", bot_token, user_token, secret)
 
@@ -115,6 +120,7 @@ def message(payload):
             client.chat_postMessage(channel=channel_id, text='Retrieving team info, just a moment...')
             api_response = get_teams()
             client.chat_postMessage(channel=channel_id, text=api_response)
+            return Response(), 200
         elif 'roster' in text:
             roster_id = league_users[user_id]
             client.chat_postMessage(channel=channel_id, text='Retrieving your roster, just a moment...')
@@ -122,25 +128,21 @@ def message(payload):
             client.chat_postMessage(channel=channel_id, text=str(teamname))
             roster = api.get_my_roster(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(roster))
+            return Response(), 200
         elif text=='cap':
             roster_id = league_users[user_id]
             client.chat_postMessage(channel=channel_id, text='Calculating your cap space, hang on...') 
             print('USERID: ', user_id)
             cap = api.get_my_cap(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(cap))
+            return Response(), 200
         elif text=='users':
             users = event.get('users')
             print("Users: ", users)
+            return Response(), 200
         else:
-            return 
-
-@app.route('/message-count', methods=['POST'])
-def message_count():
-    data = request.form
-    channel_id = data.get('channel_id')
-    user_id = data.get('user_id')
-    client.chat_postMessage(channel=channel_id, text='Got your slash command')
-    return Response(), 200
+            client.chat_postMessage(channel=channel_id, text="I didn't understand your request, sorry.") 
+            return Response(), 200
 
 @app.route('/roster', methods=['POST'])
 def get_roster():
@@ -221,6 +223,8 @@ def get_cap():
                                         }
                                     }
                                 ])
+        return Response(), 200
+
     else:
         roster_id = league_users[user_id]
         client.chat_postMessage(channel=channel_id, text='Calculating your cap space, hang on...') 
@@ -250,6 +254,8 @@ def get_cap():
                                     }
                                 ])
 
+        return Response(), 200
+
 @app.route('/salary-reset', methods=['POST'])
 def reset_salaries():
     data = request.form
@@ -269,7 +275,7 @@ def reset_salaries():
 
     client.chat_postMessage(channel=channel_id, text='Here are the current player/roster/salary standings. Edit them and repost here to update the league.')
 
-    return Response(), 200
+    return 'SUCCESS'
 
 # Setup league with one slash comman, including leaguID
 @app.route('/initialize', methods=['POST'])
@@ -300,13 +306,40 @@ def initialize_league():
 
         return_val = reset_salaries()
 
-        return return_val, 200
+        return Response(), 200
 
     except Exception as e:
 
         return e, 500
 
-    
+# Adjusting settings
+@app.route('/settings', methods=['POST'])
+def change_settings():
+    data = request.form
+    print("DATA: ", data)
+    channel_id = data.get('channel_id')
+    user_id = data.get('user_id')
+    text = data.get('text')
+
+    # Pull leagueID, salaryCap, rosterMin, rosterMax from text
+    text_list = text.split(' ')
+    salaryCap=text_list[0]
+    rosterMin=text_list[1]
+    rosterMax=text_list[2]
+
+    # Update settings
+    result = up.update_settings(salaryCap, rosterMin, rosterMax)
+
+    if result=="SUCCESS":
+
+        # Confirming league setup
+        client.chat_postMessage(channel=channel_id, text=f"Settings changed.\nSalary cap: {salaryCap}\nRoster minimum: {rosterMin}\nRoster maximum: {rosterMax}") 
+
+        return Response(), 200
+
+    else:
+
+        return "FAILURE SETTING UPDATE", 500
 
 @app.route('/api/test/', methods=['GET'])
 def test():
@@ -362,12 +395,68 @@ def get_teams():
 
         return f"TEAM RETRIEVAL ERROR {e}", 500
 
+# Get team info
+@app.route('/api/checkTransaction/', methods=['GET'])
+def check_transaction():
+
+    try:
+
+        leagueID = api.get_league_id()
+
+        transactions = api.get_transactions(leagueID)
+        print("ALL TRANSACTIONS: ", transactions)
+
+        transactionID = api.get_most_recent_transaction(transactions)
+        print("LATEST TRANSACTION FOUND: ", transactionID)
+
+        lastTransaction = up.get_stored_transaction(leagueID)
+        print("LAST STORED TRANSACTION: ", lastTransaction)
+
+        if transactionID<=lastTransaction:
+            print("SAME TRANSACTION, NO NEED TO UPDATE")
+            return "NO UPDATE"
+        elif transactionID>lastTransaction:
+            print("NEW TRANSACTIONS FOUND, NEED TO UPDATE ROSTERS")
+            up.update_from_transctions(transactions, lastTransaction)
+
+            print("TRANSACTION EXECUTED, UPDATING LATEST TRANSACTION DATA IN SETTINGS")
+            message = up.store_most_recent_transaction(leagueID, transactionID)
+
+            return "NEW TRANSACTIONS"
+        else:
+            return "FAILURE"
+
+    except Exception as e:
+
+        return f"TRANSACTION UPDATE ERROR {e}"
+
 # Main web landing page
 @app.route('/', methods=['GET'])
 def index():
     return "<h1>Welcome to the CapMan server!!</h1>"
 
+def check_transactions():
+    print('Checking transactions! The time is: %s' % datetime.now())
+    result = check_transaction()
 
+    compliance_result = up.check_compilance()
 
+    if compliance_result:
+        for result in compliance_result:
+            team_name = result[0]
+            salary = result[1]
+            count = result[2]
+            client.chat_postMessage(channel=alert_channel, text=f"Team {team_name} is out of compliance!\nSalary: ${salary}\nRoster count: {count}")
+
+        return "TEAMS NOTIFIED", 200
+    else:
+        return "ALL TEAMS IN COMPLIANCE", 200
+
+# Instantiating scheduler
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(check_transactions, 'interval', minutes=30)
+sched.start()
+
+# Running app when called from python or gunicorn
 if __name__=="__main__":
     app.run(debug=True, host='0.0.0.0', port=port)

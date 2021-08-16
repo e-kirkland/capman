@@ -1,0 +1,58 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: CapManTest
+features:
+  app_home:
+    home_tab_enabled: false
+    messages_tab_enabled: true
+    messages_tab_read_only_enabled: true
+  bot_user:
+    display_name: CapManTest
+    always_online: false
+  slash_commands:
+    - command: /initialize
+      url: http://39c4416b415f.ngrok.io/initialize
+      description: Initialize
+      should_escape: false
+    - command: /roster
+      url: http://39c4416b415f.ngrok.io/roster
+      description: roster
+      should_escape: false
+    - command: /cap
+      url: http://39c4416b415f.ngrok.io/cap
+      description: cap
+      should_escape: false
+oauth_config:
+  scopes:
+    user:
+      - chat:write
+      - files:write
+      - files:read
+      - channels:history
+    bot:
+      - channels:history
+      - chat:write
+      - commands
+      - im:write
+      - reactions:read
+      - files:read
+      - files:write
+settings:
+  event_subscriptions:
+    request_url: http://39c4416b415f.ngrok.io/slack/events
+    user_events:
+      - file_change
+      - file_created
+      - file_public
+      - file_shared
+      - message.channels
+    bot_events:
+      - file_change
+      - file_created
+      - file_public
+      - message.channels
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
