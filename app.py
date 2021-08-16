@@ -21,7 +21,7 @@ from scripts import initialize as init
 
 # Instantiating app
 app = Flask(__name__)
-port = int(os.environ.get("PORT", 5000))
+# port = int(os.environ.get("PORT", 5000))
 # Enable CORS
 cors = CORS(app)
 
@@ -370,4 +370,4 @@ def index():
 
 
 if __name__=="__main__":
-    app.run(host='0.0.0.0', debug=True, port=port)
+    app.run(debug=True, port=3000)
