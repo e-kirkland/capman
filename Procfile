@@ -1,1 +1,1 @@
-worker: python app.py
+web: gunicorn --error-logfile - app:app
