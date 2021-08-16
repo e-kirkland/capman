@@ -368,8 +368,8 @@ def get_roster_id(text):
         6: ['nick', 'nicholas', 'bazemore', 'tech', 'gtech', 'ga'],
         7: ['ryan', 'atkinson', 'rules', 'sucks'],
         8: ['chris', 'kirkland', 'acworth', 'eagles', 'lame'],
-        9: ['jeremy', 'hess', 'big', 'home'],
-        10: ['alex', 'aghoian', 'beats', 'ray']
+        9: ['alex', 'aghoian', 'beats', 'ray'],
+        10: ['jeremy', 'hess', 'big', 'home']
     }
 
     roster_id = '9'
