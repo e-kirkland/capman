@@ -1,1 +1,1 @@
-web: gunicorn --error-logfile - app:app
+web: gunicorn app:server

@@ -362,5 +362,12 @@ def get_teams():
 
         return f"TEAM RETRIEVAL ERROR {e}", 500
 
+# Main web landing page
+@app.route('/', methods=['GET'])
+def index():
+    return "<h1>Welcome to the CapMan server!!</h1>"
+
+
+
 if __name__=="__main__":
     app.run(host='0.0.0.0', debug=True, port=port)
