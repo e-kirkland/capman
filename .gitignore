@@ -132,3 +132,7 @@ dmypy.json
 data/
 output/*
 !output/.gitkeep
+
+# React
+client/node_modules/*
+!client/node_modules/.gitkeep

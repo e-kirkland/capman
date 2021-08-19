@@ -7,7 +7,7 @@ from os.path import join, dirname
 from datetime import datetime
 
 # Third party imports
-from flask import Flask, request, jsonify, Response, make_response
+from flask import Flask, request, jsonify, Response, make_response, send_from_directory
 from flask_cors import CORS
 import checkpointe as check
 import redis
@@ -24,7 +24,7 @@ from scripts import initialize as init
 from scripts import update as up
 
 # Instantiating app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='client/build', static_url_path='')
 port = int(os.environ.get("PORT", 3000))
 # Enable CORS
 cors = CORS(app)
@@ -395,6 +395,20 @@ def get_teams():
 
         return f"TEAM RETRIEVAL ERROR {e}", 500
 
+# Get all player info
+@app.route('/api/getPlayers/', methods=['GET'])
+def get_players():
+
+    try:
+
+        df_json = api.get_all_players()
+
+        return df_json, 200
+
+    except Exception as e:
+
+        return f"PLAYER RETRIEVAL ERROR {e}", 500
+
 # Get team info
 @app.route('/api/checkTransaction/', methods=['GET'])
 def check_transaction():
@@ -432,8 +446,8 @@ def check_transaction():
 
 # Main web landing page
 @app.route('/', methods=['GET'])
-def index():
-    return "<h1>Welcome to the CapMan server!!</h1>"
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 def check_transactions():
     print('Checking transactions! The time is: %s' % datetime.now())

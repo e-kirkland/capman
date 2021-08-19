@@ -396,3 +396,36 @@ def get_league_id():
     transaction_id = settingsdf['league_id'][0]
 
     return transaction_id
+
+def get_all_players():
+
+    # Getting tokens from env
+    dotenv_path = join(dirname(__file__), '../.env')
+    load_dotenv(dotenv_path)
+    db = os.environ.get('POSTGRES_DB')
+    print("DATABASE TO CONNECT TO: ", db)
+
+    query = """SELECT COALESCE(p.player, p.team) as player,
+                      p.position,
+                      p.team,
+                      p.salary,
+                      r.display_name
+                 FROM players p
+      LEFT OUTER JOIN rosters r
+                   ON p.roster_id=r.roster_id
+             ORDER BY p.roster_id,
+                      CASE WHEN position='QB' THEN 1
+                           WHEN position='RB' THEN 2
+                           WHEN position='WR' THEN 3
+                           WHEN position='TE' THEN 4
+                           WHEN position='K' THEN 5
+                           WHEN position='DEF' THEN 6 END,
+                      p.salary DESC"""
+
+    df_players = pgt.df_from_postgres(query, db, 'players')
+
+    df_players = df_players.fillna('None')
+
+    df_json = df_players.to_json(orient='records')
+
+    return df_json
