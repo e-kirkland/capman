@@ -11,6 +11,7 @@ import {
 import { DocsLink } from 'src/reusable'
 
 import usersData from './users/UsersData.js'
+require('dotenv').config();
 
 
 

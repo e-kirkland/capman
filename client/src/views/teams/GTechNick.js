@@ -8,6 +8,7 @@ import {
   CDataTable,
   CRow
 } from '@coreui/react'
+require('dotenv').config();
 
 const getBadge = status => {
   switch (status) {
