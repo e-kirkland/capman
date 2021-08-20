@@ -116,12 +116,7 @@ def message(payload):
     text = event.get('text').lower()
 
     if user_id != None and BOT_ID != user_id:
-        if text=='teams':
-            client.chat_postMessage(channel=channel_id, text='Retrieving team info, just a moment...')
-            api_response = get_teams()
-            client.chat_postMessage(channel=channel_id, text=api_response)
-            return Response(), 200
-        elif 'roster' in text:
+        if 'roster' in text:
             roster_id = league_users[user_id]
             client.chat_postMessage(channel=channel_id, text='Retrieving your roster, just a moment...')
             teamname = api.get_team_name(roster_id)
@@ -129,16 +124,12 @@ def message(payload):
             roster = api.get_my_roster(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(roster))
             return Response(), 200
-        elif text=='cap':
+        elif 'cap' in text:
             roster_id = league_users[user_id]
             client.chat_postMessage(channel=channel_id, text='Calculating your cap space, hang on...') 
             print('USERID: ', user_id)
             cap = api.get_my_cap(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(cap))
-            return Response(), 200
-        elif text=='users':
-            users = event.get('users')
-            print("Users: ", users)
             return Response(), 200
         else:
             client.chat_postMessage(channel=channel_id, text="I didn't understand your request, sorry.") 
@@ -183,6 +174,17 @@ def get_roster():
                                         "text": {
                                             "type": "mrkdwn",
                                             "text": roster
+                                        }
+                                    }
+                                ])
+        client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": "You can view all rosters here: <https://capmanbot.herokuapp.com/>"
                                         }
                                     }
                                 ])
