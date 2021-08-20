@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import {
   CBadge,
   CCard,
@@ -8,7 +8,8 @@ import {
   CDataTable,
   CRow
 } from '@coreui/react'
-require('dotenv').config();
+
+const WidgetsBrand = lazy(() => import('../widgets/WidgetsTeam.js'))
 
 const getBadge = status => {
   switch (status) {
@@ -19,11 +20,16 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['display_name','player', 'position', 'team', 'salary']  
+const fields = ['display_name','player', 'position', 'team', 'salary']
+
 
 const TeamTable = () => {
 
   const [playerData, setPlayerData] = useState([]);
+  const [salaryCap, setSalaryCap] = useState(0);
+  const [teamCap, setTeamCap] = useState(0);
+  const [teamCount, setTeamCount] = useState(0);
+  const [rosterMax, setRosterMax] = useState(0);  
 
   // Fetching summary data for selected waiver
   const fetchAllData = async () => {
@@ -36,23 +42,56 @@ const TeamTable = () => {
     let summaryArray = Object.values(summary);
 
     // filter Array to objects in team of interest
-    let teamArray = summaryArray.filter(item => item.display_name==='jeffreywolfeherbst')
-    console.log("SUMMARY ARRAY: ", teamArray);
+    let teamArray = summaryArray.filter(item => item.display_name==='JBH1983')
+    console.log("ACWORTH SUMMARY ARRAY: ", teamArray);
     setPlayerData(teamArray);
     return teamArray
   };
 
+  // Fetching summary data for selected waiver
+  const fetchLeagueData = async () => {
+    
+    let url = process.env.REACT_APP_API + '/capStatus'
+    console.log("URL: ", url)
+    let summary = await fetch(url)
+                      .then(res => res.json());
+
+    let summaryArray = Object.values(summary);
+    console.log("SUMMARY ARRAY: ", summaryArray);
+    let leagueCapJSON = summaryArray[0]
+    let salaries = []
+    let rosterNums = []
+    leagueCapJSON.forEach(function(item){
+      let salary = item['current_salary']
+      let num = item['current_players']
+      rosterNums.push(num)
+      salaries.push(salary)
+      })
+
+    let teamData = leagueCapJSON.find(o => o.display_name === 'JBH1983')
+    setTeamCap(teamData['current_salary'])
+    console.log("SALARY ARRAY: ", teamData)
+    let settingsJSON = summaryArray[1]
+    console.log("SETTINGS JSON: ", settingsJSON)
+    setTeamCount(teamData['current_players'])
+    setSalaryCap(parseInt(settingsJSON['salary_cap']));
+    setRosterMax(parseInt(settingsJSON['roster_max']));
+    return summary
+  };
+
   useEffect(() => {
     fetchAllData();
+    fetchLeagueData();
   }, [])
 
   return (
     <>
+      <WidgetsBrand withCharts teamCap={teamCap} teamCount={teamCount} salaryCap={salaryCap} rosterMax={rosterMax}/>
       <CRow>
         <CCol>
           <CCard>
             <CCardHeader>
-              GO BIG OR GO HOME
+              ACWORTH EAGLES
             </CCardHeader>
             <CCardBody>
             <CDataTable
