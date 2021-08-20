@@ -45,13 +45,34 @@ client = slack.WebClient(token=bot_token)
 BOT_ID = client.api_call("auth.test")['user_id']
 
 league_users = {
-    "U011KTB2AMQ": 1,
-    "U232RJNTH": 2,
-    "U9CQGJH0S": 4,
-    "UBV333PT8": 6,
-    "U236W3RAM": 7,
-    "U232X98MS": 8,
-    "U9FL1AP2B": 9,
+    "U011KTB2AMQ": {
+        "roster_id":1,
+        "url":"https://capmanbot.herokuapp.com/#/TrustTheProcess"
+    },
+    "U232RJNTH": {
+        "roster_id":2,
+        "url":"https://capmanbot.herokuapp.com/#/TampaBayBadgers"
+    },
+    "U9CQGJH0S": {
+        "roster_id":4,
+        "url":"https://capmanbot.herokuapp.com/#/KickersAndQBs"
+    },
+    "UBV333PT8": {
+        "roster_id":6,
+        "url":"https://capmanbot.herokuapp.com/#/GTechNick"
+    },
+    "U236W3RAM": {
+        "roster_id":7,
+        "url":"https://capmanbot.herokuapp.com/#/AtkinsonRules"
+    },
+    "U232X98MS": {
+        "roster_id":8,
+        "url":"https://capmanbot.herokuapp.com/#/AcworthEagles"
+    },
+    "U9FL1AP2B": {
+        "roster_id":9,
+        "url":"https://capmanbot.herokuapp.com/#/BeatsByRay"
+    }
 }
 
 # Recognize files created
@@ -117,19 +138,45 @@ def message(payload):
 
     if user_id != None and BOT_ID != user_id:
         if 'roster' in text:
-            roster_id = league_users[user_id]
+            team_info = league_users[user_id]
+            roster_id = team_info['roster_id']
+            url = team_info['url']
             client.chat_postMessage(channel=channel_id, text='Retrieving your roster, just a moment...')
             teamname = api.get_team_name(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(teamname))
             roster = api.get_my_roster(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(roster))
+            client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": f"View your roster here: <{url}>"
+                                        }
+                                    }
+                                ])
             return Response(), 200
         elif 'cap' in text:
-            roster_id = league_users[user_id]
+            team_info = league_users[user_id]
+            roster_id = team_info['roster_id']
+            url = team_info['url']
             client.chat_postMessage(channel=channel_id, text='Calculating your cap space, hang on...') 
             print('USERID: ', user_id)
             cap = api.get_my_cap(roster_id)
             client.chat_postMessage(channel=channel_id, text=str(cap))
+            client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": f"View your roster here: <{url}>"
+                                        }
+                                    }
+                                ])
             return Response(), 200
         else:
             client.chat_postMessage(channel=channel_id, text="I didn't understand your request, sorry.") 
@@ -159,9 +206,22 @@ def get_roster():
                                         }
                                     }
                                 ])
+        client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": f"View all rosters here: <https://capmanbod.herokuapp.com/>"
+                                        }
+                                    }
+                                ])
         return Response(), 200
     else:
-        roster_id = league_users[user_id]
+        team_info = league_users[user_id]
+        roster_id = team_info['roster_id']
+        url = team_info['url']
         client.chat_postMessage(channel=channel_id, text='Retrieving your roster, just a moment...')
         teamname = api.get_team_name(roster_id)
         client.chat_postMessage(channel=channel_id, text=str(teamname))
@@ -184,7 +244,7 @@ def get_roster():
                                         "type": "section",
                                         "text": {
                                             "type": "mrkdwn",
-                                            "text": "You can view all rosters here: <https://capmanbot.herokuapp.com/>"
+                                            "text": f"View your roster here: <{url}>"
                                         }
                                     }
                                 ])
@@ -225,10 +285,23 @@ def get_cap():
                                         }
                                     }
                                 ])
+        client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": f"View all cap spending here: <https://capmanbod.herokuapp.com/>"
+                                        }
+                                    }
+                                ])
         return Response(), 200
 
     else:
-        roster_id = league_users[user_id]
+        team_info = league_users[user_id]
+        roster_id = team_info['roster_id']
+        url = team_info['url']
         client.chat_postMessage(channel=channel_id, text='Calculating your cap space, hang on...') 
         print('USERID: ', user_id)
         teamname = api.get_team_cap(roster_id)
@@ -252,6 +325,17 @@ def get_cap():
                                         "text": {
                                             "type": "mrkdwn",
                                             "text": str(cap)
+                                        }
+                                    }
+                                ])
+        client.chat_postMessage(channel=channel_id, 
+                                text='',
+                                blocks=[
+                                    {
+                                        "type": "section",
+                                        "text": {
+                                            "type": "mrkdwn",
+                                            "text": f"View your roster here: <{url}>"
                                         }
                                     }
                                 ])
