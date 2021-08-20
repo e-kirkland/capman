@@ -25,7 +25,7 @@ from scripts import update as up
 
 # Instantiating app
 app = Flask(__name__, static_folder='client/build', static_url_path='')
-port = int(os.environ.get("PORT", 3000))
+port = int(os.environ.get("PORT", 5000))
 # Enable CORS
 cors = CORS(app)
 
@@ -494,6 +494,20 @@ def get_players():
     except Exception as e:
 
         return f"PLAYER RETRIEVAL ERROR {e}", 500
+
+# Get cap status for all teams
+@app.route('/api/capStatus/', methods=['GET'])
+def get_cap_status():
+
+    try:
+
+        export_json = api.get_all_cap_status()
+
+        return export_json, 200
+
+    except Exception as e:
+
+        return f"CAP STATUS RETRIEVAL ERROR {e}", 500
 
 # Get team info
 @app.route('/api/checkTransaction/', methods=['GET'])

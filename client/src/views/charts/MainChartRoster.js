@@ -6,20 +6,19 @@ const brandSuccess = getStyle('success') || '#4dbd74'
 const brandInfo = getStyle('info') || '#20a8d8'
 const brandDanger = getStyle('danger') || '#f86c6b'
 
-const MainChartExample = (attributes) => {
+const MainChartRoster = (attributes) => {
 
-  const [leagueCapData, setLeagueCapData] = useState([]);
-  const [salaryCap, setSalaryCap] = useState(0);
+  const [leagueRosterData, setLeagueRosterData] = useState([]);
 
   console.log("ATTRIBUTES: ", attributes.leagueCapData)
 
 
   const defaultDatasets = (()=>{
     let elements = 10
-    const data1 = leagueCapData
+    const data1 = leagueRosterData
     return [
       {
-        label: 'Salary',
+        label: 'Roster',
         backgroundColor: hexToRgba(brandInfo, 10),
         borderColor: brandInfo,
         pointHoverBackgroundColor: brandInfo,
@@ -48,8 +47,8 @@ const MainChartExample = (attributes) => {
             ticks: {
               beginAtZero: true,
               maxTicksLimit: 5,
-              stepSize: Math.ceil(250 / 5),
-              max: 250
+              stepSize: Math.ceil(30 / 5),
+              max: 30
             },
             gridLines: {
               display: true
@@ -87,13 +86,10 @@ const MainChartExample = (attributes) => {
       rosterNums.push(num)
       salaries.push(salary)
       })
-    console.log("SALARY ARRAY: ", salaries)
-    setLeagueCapData(salaries);
+    console.log("Roster ARRAY: ", rosterNums)
+    setLeagueRosterData(rosterNums);
     let settings = summaryArray[1]
-    // let settingsJSON = summaryArray['league_settings']
-    setSalaryCap(settings['salary_cap']);
-    // setRosterMin(settingsJSON['roster_min']);
-    // setRosterMax(settingsJSON['roster_max']);
+
     return summary
   };
 
@@ -126,4 +122,4 @@ const MainChartExample = (attributes) => {
 }
 
 
-export default MainChartExample
+export default MainChartRoster

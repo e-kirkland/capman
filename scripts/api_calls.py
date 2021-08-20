@@ -429,3 +429,49 @@ def get_all_players():
     df_json = df_players.to_json(orient='records')
 
     return df_json
+
+def get_all_cap_status():
+
+    # Get settings to retrieve cap min/max
+    # Getting tokens from env
+    dotenv_path = join(dirname(__file__), '../.env')
+    load_dotenv(dotenv_path)
+    db = os.environ.get('POSTGRES_DB')
+    print("DATABASE TO CONNECT TO: ", db)
+
+    query = f"SELECT * FROM SETTINGS"
+    settingsdf = pgt.df_from_postgres(query, db, 'settings')
+
+    salary_cap = settingsdf["salary_cap"][0]
+    roster_min = settingsdf["roster_min"][0]
+    roster_max = settingsdf["roster_max"][0]
+
+    query = """SELECT p.roster_id as roster_id,
+                      r.display_name as display_name,
+                      SUM(p.salary) AS current_salary,
+                      COUNT(p.*) AS current_players
+                 FROM players p
+      LEFT OUTER JOIN rosters r
+                   ON p.roster_id=r.roster_id
+                WHERE p.roster_id<11
+             GROUP BY p.roster_id, r.display_name
+            """
+
+    df_players = pgt.df_from_postgres(query, db, 'players')
+
+    settings_dict = {
+            'salary_cap':str(salary_cap),
+            'roster_min':str(roster_min),
+            'roster_max':str(roster_max)
+        }
+
+    settings_json = json.dumps(settings_dict)
+
+    league_json = df_players.to_json(orient='records')
+
+    export_dict = {
+        'settings': json.loads(settings_json),
+        'league_data': json.loads(league_json)
+    }
+
+    return export_dict

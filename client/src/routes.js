@@ -1,6 +1,7 @@
 import React from 'react';
 
 const AllPlayers = React.lazy(() => import('./views/PlayersTable'));
+const Dashboard = React.lazy(() => import('./views/Dashboard'));
 const AcworthEagles = React.lazy(() => import('./views/teams/AcworthEagles'));
 const AtkinsonRules = React.lazy(() => import('./views/teams/AtkinsonRules'));
 const BeatsByRay = React.lazy(() => import('./views/teams/BeatsByRay'));
@@ -15,6 +16,7 @@ const TrustTheProcess = React.lazy(() => import('./views/teams/TrustTheProcess')
 
 const routes = [
   { path: '/', exact: true, name: 'Home', component: AllPlayers },
+  { path: '/Dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/AcworthEagles', name: 'Acworth Eagles', component: AcworthEagles },
   { path: '/AtkinsonRules', name: 'Dashboard', component: AtkinsonRules },
   { path: '/BeatsByRay', name: 'Acworth Eagles', component: BeatsByRay },
