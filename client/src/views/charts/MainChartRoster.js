@@ -106,16 +106,16 @@ const MainChartRoster = (attributes) => {
       // datasets={datasetLoad()}
       options={defaultOptions}
       labels={[
-        'Acworth Eagles',
-        'Atkinson Rules',
-        'Beats By Ray',
-        'Essendon Bombers',
-        'Go Big or Go Home',
-        'GTech Nick',
+        'Trust The Process',
         'Kickers and QBs',
-        'Tampa Bay Badgers',
         'The Cleveland Steamers',
-        'Trust The Process'
+        'Essendon Bombers',
+        'Tampa Bay Badgers',
+        'Beats By Ray',
+        'Atkinson Rules',
+        'Acworth Eagles',
+        'GTech Nick',
+        'Go Big or Go Home'
       ]}
     />
   )

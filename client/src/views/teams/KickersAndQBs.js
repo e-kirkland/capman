@@ -68,7 +68,7 @@ const TeamTable = () => {
       salaries.push(salary)
       })
 
-    let teamData = leagueCapJSON.find(o => o.display_name === 'ChrisKirkland')
+    let teamData = leagueCapJSON.find(o => o.display_name === 'jeffreywolfeherbst')
     setTeamCap(teamData['current_salary'])
     console.log("SALARY ARRAY: ", teamData)
     let settingsJSON = summaryArray[1]
