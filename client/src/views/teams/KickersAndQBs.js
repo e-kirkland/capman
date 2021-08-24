@@ -43,7 +43,7 @@ const TeamTable = () => {
 
     // filter Array to objects in team of interest
     let teamArray = summaryArray.filter(item => item.display_name==='jeffreywolfeherbst')
-    console.log("ACWORTH SUMMARY ARRAY: ", teamArray);
+    console.log("KICKERS AND QBS SUMMARY ARRAY: ", teamArray);
     setPlayerData(teamArray);
     return teamArray
   };
@@ -91,7 +91,7 @@ const TeamTable = () => {
         <CCol>
           <CCard>
             <CCardHeader>
-              ACWORTH EAGLES
+              KICKERS AND QBS
             </CCardHeader>
             <CCardBody>
             <CDataTable
