@@ -58,8 +58,28 @@ def update_from_transctions(transactions, lastTransaction):
 
     for transaction in new_transactions:
         print("TRANSACTION: ", transaction)
-        # Free agent transactions
-        if transaction['type']!=None:
+        # Waiver transactions
+        if transaction['type']=='waiver':
+            adds = transaction['adds']
+            keys = [x for x in adds.keys()]
+            values = [x for x in adds.values()]
+            bid = transaction['settings']['waiver_bid']
+
+            for n in range(0, len(keys)):
+                query = f"""
+                    UPDATE players
+                    SET roster_id={str(values[n])},
+                        salary={int(bid)}
+                    WHERE player_id='{str(keys[n])}'
+                    """
+
+                print(query)
+
+                # Update players one by one
+                cursor.execute(query)
+
+        # All other transactions
+        elif transaction['type']!=None:
             # Get all player adds
             adds = transaction['adds']
             drops = transaction['drops']
