@@ -38,7 +38,8 @@ def setup_database():
         position    VARCHAR,
         team        VARCHAR,
         salary      INTEGER,
-        roster_id   VARCHAR
+        roster_id   VARCHAR,
+        injured_reserve BOOLEAN
     )
     """,
     """
