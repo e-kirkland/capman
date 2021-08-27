@@ -9,6 +9,7 @@ const brandDanger = getStyle('danger') || '#f86c6b'
 const MainChartRoster = (attributes) => {
 
   const [leagueRosterData, setLeagueRosterData] = useState([]);
+  const [rosterNames, setRosterNames] = useState([]);
 
   console.log("ATTRIBUTES: ", attributes.leagueCapData)
 
@@ -80,14 +81,18 @@ const MainChartRoster = (attributes) => {
     let leagueCapJSON = summaryArray[0]
     let salaries = []
     let rosterNums = []
+    let teamNames = [];
     leagueCapJSON.forEach(function(item){
       let salary = item['current_salary']
       let num = item['current_players']
+      let name = item['display_name']
       rosterNums.push(num)
       salaries.push(salary)
+      teamNames.push(name)
       })
     console.log("Roster ARRAY: ", rosterNums)
     setLeagueRosterData(rosterNums);
+    setRosterNames(teamNames);
     let settings = summaryArray[1]
 
     return summary
@@ -105,18 +110,7 @@ const MainChartRoster = (attributes) => {
       // datasets={leagueCapData}
       // datasets={datasetLoad()}
       options={defaultOptions}
-      labels={[
-        'Trust The Process',
-        'Kickers and QBs',
-        'The Cleveland Steamers',
-        'Essendon Bombers',
-        'Tampa Bay Badgers',
-        'Beats By Ray',
-        'Atkinson Rules',
-        'Acworth Eagles',
-        'GTech Nick',
-        'Go Big or Go Home'
-      ]}
+      labels={rosterNames}
     />
   )
 }

@@ -10,6 +10,7 @@ const MainChartExample = (attributes) => {
 
   const [leagueCapData, setLeagueCapData] = useState([]);
   const [salaryCap, setSalaryCap] = useState(0);
+  const [rosterNames, setRosterNames] = useState([]);
 
   console.log("ATTRIBUTES: ", attributes.leagueCapData)
 
@@ -81,14 +82,18 @@ const MainChartExample = (attributes) => {
     let leagueCapJSON = summaryArray[0]
     let salaries = []
     let rosterNums = []
+    let teamNames = []
     leagueCapJSON.forEach(function(item){
       let salary = item['current_salary']
       let num = item['current_players']
+      let name = item['display_name']
       rosterNums.push(num)
       salaries.push(salary)
+      teamNames.push(name)
       })
     console.log("SALARY ARRAY: ", salaries)
     setLeagueCapData(salaries);
+    setRosterNames(teamNames);
     let settings = summaryArray[1]
     // let settingsJSON = summaryArray['league_settings']
     setSalaryCap(settings['salary_cap']);
@@ -109,18 +114,7 @@ const MainChartExample = (attributes) => {
       // datasets={leagueCapData}
       // datasets={datasetLoad()}
       options={defaultOptions}
-      labels={[
-        'Trust The Process',
-        'Kickers and QBs',
-        'The Cleveland Steamers',
-        'Essendon Bombers',
-        'Tampa Bay Badgers',
-        'Beats By Ray',
-        'Atkinson Rules',
-        'Acworth Eagles',
-        'GTech Nick',
-        'Go Big or Go Home'
-      ]}
+      labels={rosterNames}
     />
   )
 }
