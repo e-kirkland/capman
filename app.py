@@ -456,9 +456,11 @@ def setup_league():
 @app.route('/api/getTransactions/', methods=['GET'])
 def get_transactions():
 
+    leagueID = request.args.get('leagueID')
+
     try:
 
-        transactions = api.get_transactions()
+        transactions = api.get_transactions(leagueID)
 
         return str(transactions), 200
 
