@@ -289,7 +289,7 @@ def get_my_cap(roster_id):
     load_dotenv(dotenv_path)
     db = os.environ.get('POSTGRES_DB')
 
-    query = f"""SELECT SUM(salary) FROM players WHERE roster_id='{roster_id}' AND injured_reserve!='true';"""
+    query = f"""SELECT SUM(salary) FROM players WHERE roster_id='{roster_id}' AND injured_reserve='f';"""
     capdf = pgt.df_from_postgres(query, db, 'players')
     print("CAPDF: ", capdf.head())
 
@@ -420,7 +420,7 @@ def get_all_players():
                            WHEN position='TE' THEN 4
                            WHEN position='K' THEN 5
                            WHEN position='DEF' THEN 6
-                           WHEN injured_reserve='true' THEN 7 END,
+                           WHEN injured_reserve='t' THEN 7 END,
                       p.salary DESC"""
 
     df_players = pgt.df_from_postgres(query, db, 'players')
@@ -455,7 +455,7 @@ def get_all_cap_status():
       LEFT OUTER JOIN rosters r
                    ON p.roster_id=r.roster_id
                 WHERE p.roster_id<11
-                  AND p.injured_reserve!='true'
+                  AND p.injured_reserve='f'
              GROUP BY p.roster_id, r.display_name
             """
 

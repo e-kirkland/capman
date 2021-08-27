@@ -257,7 +257,7 @@ def check_compilance():
         team_name = teamsdf['display_name'][n]
 
         # Get players for this roster
-        query = f"SELECT * FROM players WHERE roster_id='{id}' AND injured_reserve!='true'"
+        query = f"SELECT * FROM players WHERE roster_id='{id}' AND injured_reserve='f'"
         teamdf = pgt.df_from_postgres(query, db, 'settings')
 
         salary_total = teamdf['salary'].sum()
