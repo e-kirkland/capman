@@ -102,6 +102,45 @@ def update_from_transctions(transactions, lastTransaction):
             else:
                 pass
 
+        # Free Agent transactions
+        if transaction['type']=='free_agent':
+            adds = transaction['adds']
+            drops = transaction['drops']
+
+            # Execute drops first
+            if drops:
+                keys = [x for x in drops.keys()]
+                values = [x for x in drops.values()]
+                for n in range(0, len(keys)):
+                    query = f"""
+                        UPDATE players
+                        SET roster_id='999',
+                            salary=0
+                        WHERE player_id='{str(keys[n])}'
+                        """
+
+                    print(query)
+
+                    # Update players one by one
+                    cursor.execute(query)
+
+            # Then process additions
+            keys = [x for x in adds.keys()]
+            values = [x for x in adds.values()]
+
+            for n in range(0, len(keys)):
+                query = f"""
+                    UPDATE players
+                    SET roster_id={str(values[n])},
+                        salary=1
+                    WHERE player_id='{str(keys[n])}'
+                    """
+
+                print(query)
+
+                # Update players one by one
+                cursor.execute(query)
+
         # All other transactions
         elif transaction['type']!=None:
             # Get all player adds
