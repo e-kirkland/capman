@@ -90,17 +90,18 @@ def get_transactions(leagueID):
         transactions = []
 
         # List of possible weeks
-        weeklist = range(18, 0, -1)
+        weeklist = range(0, 18)
         print("WEEKLIST: ", weeklist)
 
-        while len(transactions)==0:
-            for n in weeklist:
-            
-                print(f"TRYING TRANSACTIONS FOR WEEK {n}")
-                # Try to get transactions for week number
-                transactions = league.get_transactions(n)
-            # If no transactions found, return none
-            break
+        
+        for n in weeklist:
+        
+            print(f"TRYING TRANSACTIONS FOR WEEK {n}")
+            # Try to get transactions for week number
+            week_transactions = league.get_transactions(n)
+            if week_transactions:
+                print("TRANSACTIONS RETRIEVED: ", len(week_transactions))
+            transactions.extend(week_transactions)
 
         return transactions
 
