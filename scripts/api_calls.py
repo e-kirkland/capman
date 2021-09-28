@@ -101,7 +101,7 @@ def get_transactions(leagueID):
             week_transactions = league.get_transactions(n)
             if week_transactions:
                 print("TRANSACTIONS RETRIEVED: ", len(week_transactions))
-            transactions.extend(week_transactions)
+            transactions = week_transactions + transactions
 
         return transactions
 
