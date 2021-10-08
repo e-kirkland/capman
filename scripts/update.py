@@ -84,21 +84,22 @@ def update_from_transctions(transactions, lastTransaction):
                         cursor.execute(query)
 
                 # Then process additions
-                keys = [x for x in adds.keys()]
-                values = [x for x in adds.values()]
+                if adds:
+                    keys = [x for x in adds.keys()]
+                    values = [x for x in adds.values()]
 
-                for n in range(0, len(keys)):
-                    query = f"""
-                        UPDATE players
-                        SET roster_id={str(values[n])},
-                            salary={int(bid)}
-                        WHERE player_id='{str(keys[n])}'
-                        """
+                    for n in range(0, len(keys)):
+                        query = f"""
+                            UPDATE players
+                            SET roster_id={str(values[n])},
+                                salary={int(bid)}
+                            WHERE player_id='{str(keys[n])}'
+                            """
 
-                    print(query)
+                        print(query)
 
-                    # Update players one by one
-                    cursor.execute(query)
+                        # Update players one by one
+                        cursor.execute(query)
             else:
                 pass
 
@@ -125,21 +126,22 @@ def update_from_transctions(transactions, lastTransaction):
                     cursor.execute(query)
 
             # Then process additions
-            keys = [x for x in adds.keys()]
-            values = [x for x in adds.values()]
+            if adds:
+                keys = [x for x in adds.keys()]
+                values = [x for x in adds.values()]
 
-            for n in range(0, len(keys)):
-                query = f"""
-                    UPDATE players
-                    SET roster_id={str(values[n])},
-                        salary=1
-                    WHERE player_id='{str(keys[n])}'
-                    """
+                for n in range(0, len(keys)):
+                    query = f"""
+                        UPDATE players
+                        SET roster_id={str(values[n])},
+                            salary=1
+                        WHERE player_id='{str(keys[n])}'
+                        """
 
-                print(query)
+                    print(query)
 
-                # Update players one by one
-                cursor.execute(query)
+                    # Update players one by one
+                    cursor.execute(query)
 
         # All other transactions
         elif transaction['type']!=None:
