@@ -101,7 +101,12 @@ def update_from_transctions(transactions, lastTransaction):
                         # Update players one by one
                         cursor.execute(query)
             else:
-                pass
+                # Close communication
+                cursor.close()
+                # Commit changes
+                conn.commit()
+                print("TRANSACTIONS_COMPLETED: ", new_transactions)
+                return
 
         # Free Agent transactions
         if transaction['type']=='free_agent':
@@ -221,17 +226,19 @@ def update_from_transctions(transactions, lastTransaction):
 
         # Free agent transactions
         else:
-            pass
+            # Close communication
+            cursor.close()
+            # Commit changes
+            conn.commit()
+            print("TRANSACTIONS_COMPLETED: ", new_transactions)
+            return
                 
 
     # Close communication
     cursor.close()
-
     # Commit changes
     conn.commit()
-
     print("TRANSACTIONS_COMPLETED: ", new_transactions)
-
     return
 
 def store_most_recent_transaction(leagueID, lastTransaction):
