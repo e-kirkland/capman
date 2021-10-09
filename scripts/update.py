@@ -61,7 +61,7 @@ def update_from_transctions(transactions, lastTransaction):
         print("TRANSACTION: ", transaction)
         # Waiver transactions
         if transaction['type']=='waiver':
-            if metadata['notes']=='Your waiver claim was processed successfully!':
+            if transaction['status']=='complete':
                 adds = transaction['adds']
                 drops = transaction['drops']
                 bid = transaction['settings']['waiver_bid']
