@@ -474,8 +474,8 @@ def get_transactions():
 def get_teams():
 
     try:
-
-        teams = api.get_teams()
+        leagueID = api.get_league_id()
+        teams = api.get_teams(leagueID)
 
         return str(teams), 200
 
