@@ -1,6 +1,6 @@
 # Standard library imports
 import os
-from os.path import join, dirname 
+from os.path import join, dirname
 
 # Third-party imports
 from sqlalchemy import create_engine
@@ -16,10 +16,10 @@ from scripts import api_calls as api
 def setup_database():
 
     commands = (
-    """
+        """
     DROP TABLE IF EXISTS settings
     """,
-    """
+        """
     CREATE TABLE settings (
         league_id INTEGER NOT NULL PRIMARY KEY,
         salary_cap INTEGER NOT NULL,
@@ -28,10 +28,10 @@ def setup_database():
         transaction_id VARCHAR
     )
     """,
-    """
+        """
     DROP TABLE IF EXISTS players
     """,
-    """
+        """
     CREATE TABLE players (
         player_id   VARCHAR NOT NULL PRIMARY KEY,
         player      VARCHAR,
@@ -42,10 +42,10 @@ def setup_database():
         injured_reserve BOOLEAN
     )
     """,
-    """
+        """
     DROP TABLE IF EXISTS rosters
     """,
-    """
+        """
     CREATE TABLE rosters (
         roster_id       VARCHAR NOT NULL PRIMARY KEY,
         roster          VARCHAR,
@@ -53,18 +53,17 @@ def setup_database():
         salary_total    INTEGER,
         players_total   INTEGER
     )
-    """
-
+    """,
     )
     try:
 
         # storing db_path
         # Getting tokens from env
-        dotenv_path = join(dirname(__file__), '../.env')
+        dotenv_path = join(dirname(__file__), "../.env")
         load_dotenv(dotenv_path)
-        db_path = os.environ.get('POSTGRES_CONTAINER')
+        db_path = os.environ.get("POSTGRES_CONTAINER")
         print("CONNECTING TO POSTGRES AT: ", str(db_path))
-        db = os.environ.get('POSTGRES_DB')
+        db = os.environ.get("POSTGRES_DB")
         print("DATABASE TO CONNECT TO: ", db)
 
         # Accessing table in posgres db
@@ -90,6 +89,7 @@ def setup_database():
         if conn is not None:
             conn.close()
 
+
 def populate_tables(leagueID, salaryCap, rosterMin, rosterMax):
 
     # Setting league player info from Sleeper
@@ -103,21 +103,33 @@ def populate_tables(leagueID, salaryCap, rosterMin, rosterMax):
     try:
 
         # Initiating settings in table
-        col_list = ['league_id', 'salary_cap', 'roster_min', 'roster_max', 'transaction_id']
-        data_list = [int(leagueID), int(salaryCap), int(rosterMin), int(rosterMax), str(transaction_id)]
+        col_list = [
+            "league_id",
+            "salary_cap",
+            "roster_min",
+            "roster_max",
+            "transaction_id",
+        ]
+        data_list = [
+            int(leagueID),
+            int(salaryCap),
+            int(rosterMin),
+            int(rosterMax),
+            str(transaction_id),
+        ]
 
-        settingsdf = pd.DataFrame(data=[data_list], columns = col_list)
+        settingsdf = pd.DataFrame(data=[data_list], columns=col_list)
 
         print("SETTINGSDF: ", settingsdf.head())
 
         # Getting database name
-        dotenv_path = join(dirname(__file__), '../.env')
+        dotenv_path = join(dirname(__file__), "../.env")
 
         print("PATH TO LOOKUP: ", dotenv_path)
         load_dotenv(dotenv_path)
-        db = os.environ.get('POSTGRES_DB')
+        db = os.environ.get("POSTGRES_DB")
 
-        pgt.df_to_postgres(settingsdf, db, 'settings', method='replace')
+        pgt.df_to_postgres(settingsdf, db, "settings", method="replace")
 
         return "SUCCESS"
 
