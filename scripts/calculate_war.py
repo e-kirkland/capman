@@ -346,6 +346,11 @@ def update_league_war():
 
     print("MERGED DF: ", merged.head(20))
     print("MERGED DF COLUMNS: ", merged.columns)
+    print("MERGED DF INFO: ", merged.info())
+
+    ###
+    kelce = merged[merged["player"] == "Travis Kelce"]
+    print("KELCE MERGED: ", kelce)
 
     # Calculating value
     merged["salary"] = pd.to_numeric(merged["salary"])
