@@ -450,7 +450,9 @@ def get_all_players():
                       p.position,
                       p.team,
                       p.salary,
-                      r.display_name
+                      r.display_name,
+                      p.war,
+                      p.value
                  FROM players p
       LEFT OUTER JOIN rosters r
                    ON p.roster_id=r.roster_id
