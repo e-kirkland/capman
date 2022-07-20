@@ -16,12 +16,12 @@ import CIcon from '@coreui/icons-react'
 // routes config
 import routes from '../routes'
 
-import { 
+import {
   TheHeaderDropdown,
   TheHeaderDropdownMssg,
   TheHeaderDropdownNotif,
   TheHeaderDropdownTasks
-}  from './index'
+} from './index'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
@@ -29,12 +29,12 @@ const TheHeader = () => {
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
-    dispatch({type: 'set', sidebarShow: val})
+    dispatch({ type: 'set', sidebarShow: val })
   }
 
   const toggleSidebarMobile = () => {
     const val = [false, 'responsive'].includes(sidebarShow) ? true : 'responsive'
-    dispatch({type: 'set', sidebarShow: val})
+    dispatch({ type: 'set', sidebarShow: val })
   }
 
   return (
@@ -55,7 +55,7 @@ const TheHeader = () => {
 
       <CHeaderNav className="d-md-down-none mr-auto">
         <CHeaderNavItem className="px-3" >
-          <CHeaderNavLink to="/PlayersTable">All Players</CHeaderNavLink>
+          <CHeaderNavLink to="/AllPlayers">All Players</CHeaderNavLink>
         </CHeaderNavItem>
       </CHeaderNav>
 
