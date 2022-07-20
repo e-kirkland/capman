@@ -136,3 +136,6 @@ output/*
 # React
 client/node_modules/*
 !client/node_modules/.gitkeep
+
+# Jupyter
+jupyter
