@@ -168,6 +168,10 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
         fantasy_players, how="left", left_on="sleeper_id", right_on="sleeper_id"
     )
 
+    ###
+    kelce = merged[merged["sleeper_id"] == "1466"]
+    print("KELCE MERGE OUT DF: ", kelce)
+
     return merged
 
 
