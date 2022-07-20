@@ -313,13 +313,17 @@ def get_my_cap(roster_id):
     load_dotenv(dotenv_path)
     db = os.environ.get("POSTGRES_DB")
 
-    query = f"""SELECT SUM(salary) FROM players WHERE roster_id='{roster_id}' AND injured_reserve='f';"""
+    query = f"""SELECT SUM(salary) FROM players WHERE roster_id='{roster_id}';"""
     capdf = pgt.df_from_postgres(query, db, "players")
     print("CAPDF: ", capdf.head())
 
+    settings_query = f"""SELECT * FROM settings;"""
+    settings_df = pgt.df_from_postgres(settings_query, db, "settings")
+    print("SETTINGSDF: ", settings_df.head())
+
     currentcap = capdf["sum"][0]
 
-    leaguecap = 200
+    leaguecap = settings_df["salary_cap"][0]
 
     available = leaguecap - currentcap
 
