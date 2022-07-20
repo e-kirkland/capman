@@ -257,6 +257,10 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
     print("PLAYER DF INFO: ", player_df.info())
 
+    ###
+    kelce = player_df[player_df["sleeper_id"] == "1466"]
+    print("KELCE PRE WAR PLAYER DF: ", kelce)
+
     # Calculate WAR for all players
     player_df["war"] = player_df.apply(
         lambda x: calculate_war(
@@ -270,6 +274,10 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
         ),
         axis=1,
     )
+
+    ###
+    kelce = player_df[player_df["sleeper_id"] == "1466"]
+    print("KELCE PRE WAR PLAYER DF: ", kelce)
 
     print("PLAYER DF INFO POST WAR: ", player_df.info())
 
