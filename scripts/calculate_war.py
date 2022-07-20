@@ -250,6 +250,11 @@ def simulate_avg_points(avg_df, n_iter=10000):
 
 def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
+    ###
+    kelce = merged[merged["sleeper_id"] == "1466"]
+    print("KELCE INPUT WAR PLAYER DF: ", kelce)
+    print(merged.info())
+
     # Get dataframe to calculate war
     player_df = pd.DataFrame(
         merged.groupby(["player_name", "position", "sleeper_id"])
