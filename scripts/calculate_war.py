@@ -309,6 +309,7 @@ def get_year_dates():
 def update_league_war():
 
     years = get_year_dates()
+    print("YEARS TO ANALYZE: ", years)
 
     player_df = calculate_league_war(years)
     player_df = player_df.drop(columns=["position"])
