@@ -580,7 +580,7 @@ def get_war():
 
     try:
 
-        msg = war.update_league_war(years=[2021, 2020, 2019])
+        msg = war.update_league_war()
 
         return msg, 200
 

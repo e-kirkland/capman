@@ -2,6 +2,7 @@
 import random as random
 import os
 from os.path import join, dirname
+import datetime
 
 # Third-party imports
 import nfl_data_py as nfl
@@ -297,10 +298,20 @@ def calculate_value(salary, war):
         return 0.0
 
 
-def update_league_war(years=[2021, 2020, 2019]):
+def get_year_dates():
+
+    cur_year = int(datetime.datetime.now().strftime("%Y"))
+    four_years = [cur_year, cur_year - 1, cur_year - 2, cur_year - 3]
+
+    return four_years
+
+
+def update_league_war():
+
+    years = get_year_dates()
 
     player_df = calculate_league_war(years)
-    player_df = player_df.drop("position")
+    player_df = player_df.drop(columns=["position"])
 
     print("PLAYER_DF: ", player_df.head(20))
 
