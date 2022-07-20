@@ -20,7 +20,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['display_name','player', 'position', 'team', 'salary']
+const fields = ['display_name','player', 'position', 'team', 'salary', 'war', 'value']
 
 
 const TeamTable = () => {
