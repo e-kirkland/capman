@@ -328,7 +328,7 @@ def update_league_war():
     print("PLAYER_DF_INFO: ", player_df.info())
 
     ###
-    kelce = player_df[player_df["player"] == "Travis Kelce"]
+    kelce = player_df[player_df["player_name"] == "Travis Kelce"]
     print("KELCE PLAYER DF: ", kelce)
 
     # Getting tokens from env
