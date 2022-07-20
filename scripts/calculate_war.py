@@ -148,7 +148,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     # Ingest data from sleeper league
     query = f"""SELECT * FROM players;"""
     fantasy_players = pgt.df_from_postgres(query, db, "players")
-    
+
     # fantasy_players = pd.read_csv(
     #     "/Users/williamkirkland/Data/KDS/capman/data/rosters_postdraft_rookies_20220619_1.csv"
     # )
@@ -284,16 +284,31 @@ def calculate_league_war(years=[2021, 2020, 2019]):
     return player_df
 
 
+def calculate_value(salary, war):
+    if salary:
+        if war:
+            if war == 0.0:
+                return 0.0
+            else:
+                return salary / war
+        else:
+            return 0.0
+    else:
+        return 0.0
+
+
 def update_league_war(years=[2021, 2020, 2019]):
 
     player_df = calculate_league_war(years)
+
+    print("PLAYER_DF: ", player_df.head(20))
 
     # Getting tokens from env
     dotenv_path = join(dirname(__file__), "../.env")
     load_dotenv(dotenv_path)
     db = os.environ.get("POSTGRES_DB")
     print("DATABASE TO CONNECT TO: ", db)
-    db_path = os.environ.get('POSTGRES_CONTAINER')
+    db_path = os.environ.get("POSTGRES_CONTAINER")
     print("CONNECTING TO POSTGRES AT: ", str(db_path))
 
     # Getting existing players table
@@ -306,7 +321,10 @@ def update_league_war(years=[2021, 2020, 2019]):
     )
 
     # Calculating value
-    merged["value"] = merged["salary"] / merged["war"]
+    merged["salary"] = pd.to_numeric(merged["salary"])
+    merged["value"] = merged.apply(
+        lambda x: calculate_value(x["salary"], x["war"]), axis=1
+    )
 
     keepcols = [
         "player_id",
@@ -345,7 +363,7 @@ def update_league_war(years=[2021, 2020, 2019]):
     # Commit changes
     conn.commit()
 
-    return 'SUCCESS'
+    return "SUCCESS"
 
 
 if __name__ == "__main__":
