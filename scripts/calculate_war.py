@@ -176,6 +176,12 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
         fantasy_players, how="left", left_on="sleeper_id", right_on="sleeper_id"
     )
 
+    # Getting single record for each sleeper_id and position
+    player_single_record = pd.DataFrame(
+        rosters.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
+    )
+    print("PLAYER SINGLE RECORD INFO: ", player_single_record.info())
+
     return merged
 
 
