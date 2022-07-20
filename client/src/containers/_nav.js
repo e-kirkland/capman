@@ -1,7 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 
-const _nav =  [
+const _nav = [
   {
     _tag: 'CSidebarNavTitle',
     _children: ['League']
@@ -10,7 +10,7 @@ const _nav =  [
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
     to: '/dashboard',
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     // badge: {
     //   color: 'info',
     //   text: 'NEW',
@@ -19,8 +19,8 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'All Players',
-    to: '/base/tables',
-    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon"/>,
+    to: '/AllPlayers',
+    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon" />,
     // badge: {
     //   color: 'info',
     //   text: 'NEW',

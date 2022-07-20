@@ -34,7 +34,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['display_name','player', 'position', 'team', 'salary']  
+const fields = ['display_name', 'player', 'position', 'team', 'salary', 'war', 'value']
 
 const AllPlayers = () => {
 
@@ -42,11 +42,11 @@ const AllPlayers = () => {
 
   // Fetching summary data for selected waiver
   const fetchAllData = async () => {
-    
+
     let url = process.env.REACT_APP_API + '/getPlayers'
     console.log("URL: ", url)
     let summary = await fetch(url)
-                      .then(res => res.json());
+      .then(res => res.json());
 
     let summaryArray = Object.values(summary);
     console.log("SUMMARY ARRAY: ", summaryArray);
@@ -67,32 +67,32 @@ const AllPlayers = () => {
               ALL PLAYERS
             </CCardHeader>
             <CCardBody>
-            <CDataTable
-              items={playerData}
-              fields={fields}
-              hover
-              striped
-              bordered
-              size="sm"
-              itemsPerPage={100}
-              // pagination
-              scopedSlots = {{
-                'status':
-                  (item)=>(
-                    <td>
-                      <CBadge color={getBadge(item.status)}>
-                        {item.status}
-                      </CBadge>
-                    </td>
-                  )
-              }}
-            />
+              <CDataTable
+                items={playerData}
+                fields={fields}
+                hover
+                striped
+                bordered
+                size="sm"
+                itemsPerPage={100}
+                // pagination
+                scopedSlots={{
+                  'status':
+                    (item) => (
+                      <td>
+                        <CBadge color={getBadge(item.status)}>
+                          {item.status}
+                        </CBadge>
+                      </td>
+                    )
+                }}
+              />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
 
-      
+
     </>
   )
 }

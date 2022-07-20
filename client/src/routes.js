@@ -17,16 +17,17 @@ const TrustTheProcess = React.lazy(() => import('./views/teams/TrustTheProcess')
 const routes = [
   { path: '/', exact: true, name: 'Home', component: AllPlayers },
   { path: '/Dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/AllPlayers', name: 'All Players', component: AllPlayers },
   { path: '/AcworthEagles', name: 'Acworth Eagles', component: AcworthEagles },
-  { path: '/AtkinsonRules', name: 'Dashboard', component: AtkinsonRules },
-  { path: '/BeatsByRay', name: 'Acworth Eagles', component: BeatsByRay },
-  { path: '/EssendonBombers', name: 'Dashboard', component: EssendonBombers },
-  { path: '/GoBigOrGoHome', name: 'Acworth Eagles', component: GoBigOrGoHome },
-  { path: '/GTechNick', name: 'Dashboard', component: GTechNick },
-  { path: '/KickersAndQBs', name: 'Acworth Eagles', component: KickersAndQBs },
-  { path: '/TampaBayBadgers', name: 'Dashboard', component: TampaBayBadgers },
-  { path: '/TheClevelandSteamers', name: 'Acworth Eagles', component: TheClevelandSteamers },
-  { path: '/TrustTheProcess', name: 'Dashboard', component: TrustTheProcess },
+  { path: '/AtkinsonRules', name: 'Atkinson Rules', component: AtkinsonRules },
+  { path: '/BeatsByRay', name: 'Beats By Ray', component: BeatsByRay },
+  { path: '/EssendonBombers', name: 'Essendon Bombers', component: EssendonBombers },
+  { path: '/GoBigOrGoHome', name: 'Go Big or Go Home', component: GoBigOrGoHome },
+  { path: '/GTechNick', name: 'GA Tech Nick', component: GTechNick },
+  { path: '/KickersAndQBs', name: 'Kickers and QBs', component: KickersAndQBs },
+  { path: '/TampaBayBadgers', name: 'Tampa Bay Badgers', component: TampaBayBadgers },
+  { path: '/TheClevelandSteamers', name: 'Cleveland Steamers', component: TheClevelandSteamers },
+  { path: '/TrustTheProcess', name: 'Trust The Process', component: TrustTheProcess },
 ];
 
 export default routes;

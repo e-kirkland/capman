@@ -43,7 +43,7 @@ const TeamTable = () => {
 
     // filter Array to objects in team of interest
     let teamArray = summaryArray.filter(item => item.display_name === 'eddiekirkland')
-    console.log("ACWORTH SUMMARY ARRAY: ", teamArray);
+    console.log("PROCESS SUMMARY ARRAY: ", teamArray);
     setPlayerData(teamArray);
     return teamArray
   };
@@ -91,7 +91,7 @@ const TeamTable = () => {
         <CCol>
           <CCard>
             <CCardHeader>
-              ACWORTH EAGLES
+              TRUST THE PROCESS
             </CCardHeader>
             <CCardBody>
               <CDataTable
