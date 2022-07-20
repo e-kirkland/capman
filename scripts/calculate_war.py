@@ -288,10 +288,13 @@ def calculate_league_war(years=[2021, 2020, 2019]):
 def calculate_value(salary, war):
     if salary:
         if war:
-            if war == 0.0:
+            if salary == 0.0:
                 return 0.0
             else:
-                return salary / war
+                if war == 0.9:
+                    return 0.0
+                else:
+                    return war / salary
         else:
             return 0.0
     else:
