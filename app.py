@@ -5,6 +5,7 @@ import sys, os
 import json
 from os.path import join, dirname
 from datetime import datetime
+import traceback
 
 # Third party imports
 from flask import Flask, request, jsonify, Response, make_response, send_from_directory
@@ -585,7 +586,9 @@ def get_war():
 
     except Exception as e:
 
-        return f"WAR CALCULATION ERROR {e}", 500
+        msg = traceback.print_exc()
+
+        return f"WAR CALCULATION ERROR {msg}", 500
 
 
 # Main web landing page
