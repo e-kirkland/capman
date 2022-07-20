@@ -81,9 +81,9 @@ def monte_carlo_game(df, num_iterations):
 
 
 def calculate_player_wins(
-    name, position, num_games, df, avg_df, avg_team_mean, avg_team_std
+    sleeper_id, position, num_games, df, avg_df, avg_team_mean, avg_team_std
 ):
-    player_points = df[df["player_name"] == name]["total_points"]
+    player_points = df[df["sleeper_id"] == sleeper_id]["total_points"]
     player_points_avg = player_points.mean()
 
     score_without_position = avg_df[avg_df["position"] != position]["mean"].sum()
@@ -111,9 +111,11 @@ def calculate_avg_player_wins(position, num_games, avg_df, avg_team_mean, avg_te
     return player_wins
 
 
-def calculate_war(name, position, num_games, df, avg_df, avg_team_mean, avg_team_std):
+def calculate_war(
+    sleeper_id, position, num_games, df, avg_df, avg_team_mean, avg_team_std
+):
     player_wins = calculate_player_wins(
-        name, position, num_games, df, avg_df, avg_team_mean, avg_team_std
+        sleeper_id, position, num_games, df, avg_df, avg_team_mean, avg_team_std
     )
     avg_player_wins = calculate_avg_player_wins(
         position, num_games, avg_df, avg_team_mean, avg_team_std
@@ -134,6 +136,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
 
     # Download yearly data from nfl_data_py
     yearly = nfl.import_weekly_data(years, downcast=True)
+
     yearly = yearly.drop(columns=["player_name"])
     yearly = yearly.merge(
         player_merge_table, how="left", left_on="player_id", right_on="player_id"
@@ -257,7 +260,7 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
     # Calculate WAR for all players
     player_df["war"] = player_df.apply(
         lambda x: calculate_war(
-            x["player_name"],
+            x["sleeper_id"],
             x["position"],
             15,
             merged,
@@ -399,4 +402,6 @@ if __name__ == "__main__":
 
     player_df = calculate_league_war(years=[2021, 2020, 2019])
     print(player_df.head(20))
+
+    print(player_df[player_df["player_name"] == "Travis Kelce"])
 
