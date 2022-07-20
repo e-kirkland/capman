@@ -301,7 +301,7 @@ def calculate_value(salary, war):
 def get_year_dates():
 
     cur_year = int(datetime.datetime.now().strftime("%Y"))
-    four_years = [cur_year, cur_year - 1, cur_year - 2, cur_year - 3]
+    four_years = [cur_year - 1, cur_year - 2, cur_year - 3]
 
     return four_years
 
