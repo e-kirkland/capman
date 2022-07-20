@@ -128,7 +128,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
 
     # Download roster values for years
     rosters = nfl.import_rosters(years)
-    print("ROSTERS INFO AVAILABLE: ", rosters["position"].value_counts())
+
     player_merge_table = pd.DataFrame(
         rosters.groupby(["player_name", "position", "player_id", "sleeper_id"])
         .size()
