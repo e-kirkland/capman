@@ -293,6 +293,8 @@ def update_league_war(years=[2021, 2020, 2019]):
     load_dotenv(dotenv_path)
     db = os.environ.get("POSTGRES_DB")
     print("DATABASE TO CONNECT TO: ", db)
+    db_path = os.environ.get('POSTGRES_CONTAINER')
+    print("CONNECTING TO POSTGRES AT: ", str(db_path))
 
     # Getting existing players table
     query = f"""SELECT * FROM players;"""
