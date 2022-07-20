@@ -151,15 +151,21 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     print("DATABASE TO CONNECT TO: ", db)
 
     # Ingest data from sleeper league
-    query = f"""SELECT * FROM players;"""
+    query = f"""SELECT player_id,
+                       player,
+                       team,
+                       salary,
+                       roster_id,
+                       injured_reserve
+                  FROM players;"""
     fantasy_players = pgt.df_from_postgres(query, db, "players")
 
     # fantasy_players = pd.read_csv(
     #     "/Users/williamkirkland/Data/KDS/capman/data/rosters_postdraft_rookies_20220619_1.csv"
     # )
 
-    fantasy_players = fantasy_players.dropna(subset=["player"])
-    fantasy_players = fantasy_players.drop(columns=["position"])
+    # fantasy_players = fantasy_players.dropna(subset=["player"])
+    # fantasy_players = fantasy_players.drop(columns=["position"])
 
     # Merge data from sleeper league
     fantasy_players = fantasy_players.rename(
@@ -169,10 +175,6 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     merged = yearly.merge(
         fantasy_players, how="left", left_on="sleeper_id", right_on="sleeper_id"
     )
-
-    ###
-    kelce = merged[merged["sleeper_id"] == "1466"]
-    print("KELCE MERGE OUT DF: ", kelce)
 
     return merged
 
@@ -258,21 +260,13 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
     # Get dataframe to calculate war
     player_df = pd.DataFrame(
-        merged.groupby(["position", "sleeper_id"]).size().reset_index(name="Freq")
+        merged.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
     )
     positions_keep = ["QB", "RB", "WR", "TE"]
     player_df = player_df[player_df["position"].isin(positions_keep)]
 
     ###
-    kelce = player_df[player_df["sleeper_id"] == "1466"]
-    print("KELCE INPUT WAR PLAYER DF: ", kelce)
-    print(merged.info())
-
     print("PLAYER DF INFO: ", player_df.info())
-
-    ###
-    kelce = player_df[player_df["sleeper_id"] == "1466"]
-    print("KELCE PRE WAR PLAYER DF: ", kelce)
 
     # Calculate WAR for all players
     player_df["war"] = player_df.apply(
@@ -287,10 +281,6 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
         ),
         axis=1,
     )
-
-    ###
-    kelce = player_df[player_df["sleeper_id"] == "1466"]
-    print("KELCE PRE WAR PLAYER DF: ", kelce)
 
     print("PLAYER DF INFO POST WAR: ", player_df.info())
 
@@ -370,10 +360,6 @@ def update_league_war():
     print("MERGED DF COLUMNS: ", merged.columns)
     print("MERGED DF INFO: ", merged.info())
 
-    ###
-    kelce = merged[merged["player"] == "Travis Kelce"]
-    print("KELCE MERGED: ", kelce)
-
     # Calculating value
     merged["salary"] = pd.to_numeric(merged["salary"])
     merged["value"] = merged.apply(
@@ -429,6 +415,4 @@ if __name__ == "__main__":
 
     player_df = calculate_league_war(years=[2021, 2020, 2019])
     print(player_df.head(20))
-
-    print(player_df[player_df["player_name"] == "Travis Kelce"])
 
