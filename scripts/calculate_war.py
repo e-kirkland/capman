@@ -182,7 +182,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     )
     print("PLAYER SINGLE RECORD INFO: ", player_single_record.info())
 
-    return merged
+    return merged, player_single_record
 
 
 def calculate_average_team(merged, years=[2021, 2020, 2019]):
@@ -258,15 +258,17 @@ def simulate_avg_points(avg_df, n_iter=10000):
     return avg_team_mean, avg_team_std
 
 
-def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
+def calculate_all_players_war(merged, player_df, avg_df, avg_team_mean, avg_team_std):
 
     # Dropping existing war and value
     print("MERGED PRE WAR: ", merged.info())
 
     # Get dataframe to calculate war
-    player_df = pd.DataFrame(
-        merged.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
-    )
+    # player_df = pd.DataFrame(
+    #     merged.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
+    # )
+    keepcols = ["sleeper_id", "position"]
+    player_df = player_df[keepcols]
     positions_keep = ["QB", "RB", "WR", "TE"]
     player_df = player_df[player_df["position"].isin(positions_keep)]
 
@@ -297,13 +299,15 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
 def calculate_league_war(years=[2021, 2020, 2019]):
 
-    merged = create_merged_player_df(years)
+    merged, player_df = create_merged_player_df(years)
 
     avg_df = calculate_average_team(merged, years=[2021, 2020, 2019])
 
     avg_team_mean, avg_team_std = simulate_avg_points(avg_df, n_iter=10000)
 
-    player_df = calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std)
+    player_df = calculate_all_players_war(
+        merged, player_df, avg_df, avg_team_mean, avg_team_std
+    )
 
     return player_df
 
