@@ -314,6 +314,7 @@ def update_league_war(years=[2021, 2020, 2019]):
     # Getting existing players table
     query = f"""SELECT * FROM players;"""
     fantasy_players = pgt.df_from_postgres(query, db, "players")
+    fantasy_players = fantasy_players.drop(columns=["war", "value"])
 
     # Merging
     merged = fantasy_players.merge(
