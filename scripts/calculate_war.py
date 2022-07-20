@@ -128,9 +128,9 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
 
     # Download roster values for years
     rosters = nfl.import_rosters(years)
-    print("ROSTERS INFO AVAILABLE: ", rosters.info())
+    print("ROSTERS INFO AVAILABLE: ", rosters["position"].value_counts())
     player_merge_table = pd.DataFrame(
-        rosters.groupby(["player_name", "player_id", "sleeper_id"])
+        rosters.groupby(["player_name", "position", "player_id", "sleeper_id"])
         .size()
         .reset_index(name="Freq")
     )
@@ -159,6 +159,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     # )
 
     fantasy_players = fantasy_players.dropna(subset=["player"])
+    fantasy_players = fantasy_players.drop(columns=["position"])
 
     # Merge data from sleeper league
     fantasy_players = fantasy_players.rename(
@@ -346,10 +347,6 @@ def update_league_war():
 
     print("PLAYER_DF: ", player_df.head(20))
     print("PLAYER_DF_INFO: ", player_df.info())
-
-    ###
-    kelce = player_df[player_df["player_name"] == "Travis Kelce"]
-    print("KELCE PLAYER DF: ", kelce)
 
     # Getting tokens from env
     dotenv_path = join(dirname(__file__), "../.env")
