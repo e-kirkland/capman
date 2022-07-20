@@ -320,6 +320,9 @@ def update_league_war(years=[2021, 2020, 2019]):
         player_df, how="left", left_on="player_id", right_on="sleeper_id"
     )
 
+    print("MERGED DF: ", merged.head(20))
+    print("MERGED DF COLUMNS: ", merged.columns)
+
     # Calculating value
     merged["salary"] = pd.to_numeric(merged["salary"])
     merged["value"] = merged.apply(
