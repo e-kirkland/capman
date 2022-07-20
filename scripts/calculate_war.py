@@ -362,7 +362,7 @@ def update_league_war():
     engine = options[0]
     conn = engine.raw_connection()
 
-    print("CURRENT PLAYERS: ", curent_players.head(20))
+    print("CURRENT PLAYERS: ", current_players.head(20))
 
     for n in range(0, len(current_players)):
         player_id = current_players["player_id"][n]
