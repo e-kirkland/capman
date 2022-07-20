@@ -128,6 +128,7 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
 
     # Download roster values for years
     rosters = nfl.import_rosters(years)
+    print("ROSTERS INFO AVAILABLE: ", rosters)
     player_merge_table = pd.DataFrame(
         rosters.groupby(["player_name", "player_id", "sleeper_id"])
         .size()
@@ -250,19 +251,21 @@ def simulate_avg_points(avg_df, n_iter=10000):
 
 def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
-    ###
-    kelce = merged[merged["sleeper_id"] == "1466"]
-    print("KELCE INPUT WAR PLAYER DF: ", kelce)
-    print(merged.info())
+    # Dropping existing war and value
+    merged = merged.drop(columns=["war", "value"])
+    print("MERGED PRE WAR: ", merged.info())
 
     # Get dataframe to calculate war
     player_df = pd.DataFrame(
-        merged.groupby(["player_name", "position", "sleeper_id"])
-        .size()
-        .reset_index(name="Freq")
+        merged.groupby(["position", "sleeper_id"]).size().reset_index(name="Freq")
     )
-    positions_keep = ["QB", "RB", "WR", "RB"]
+    positions_keep = ["QB", "RB", "WR", "TE"]
     player_df = player_df[player_df["position"].isin(positions_keep)]
+
+    ###
+    kelce = player_df[player_df["sleeper_id"] == "1466"]
+    print("KELCE INPUT WAR PLAYER DF: ", kelce)
+    print(merged.info())
 
     print("PLAYER DF INFO: ", player_df.info())
 
