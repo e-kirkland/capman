@@ -325,6 +325,11 @@ def update_league_war():
     player_df = player_df.drop(columns=["position"])
 
     print("PLAYER_DF: ", player_df.head(20))
+    print("PLAYER_DF_INFO: ", player_df.info())
+
+    ###
+    kelce = player_df[player_df["player"] == "Travis Kelce"]
+    print("KELCE PLAYER DF: ", kelce)
 
     # Getting tokens from env
     dotenv_path = join(dirname(__file__), "../.env")
