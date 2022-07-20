@@ -371,8 +371,8 @@ def update_league_war():
         if war and value:
             query = f"""
                 UPDATE players
-                SET war={war},
-                    value={value}
+                SET war='{war}',
+                    value='{value}'
                 WHERE player_id='{str(player_id)}'
                 """
         else:
