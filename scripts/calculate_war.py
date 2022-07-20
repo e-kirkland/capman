@@ -362,16 +362,21 @@ def update_league_war():
     engine = options[0]
     conn = engine.raw_connection()
 
+    print("CURRENT PLAYERS: ", curent_players.head(20))
+
     for n in range(0, len(current_players)):
         player_id = current_players["player_id"][n]
         war = current_players["war"][n]
         value = current_players["value"][n]
-        query = f"""
-            UPDATE players
-            SET war={war},
-                value={value}
-            WHERE player_id='{str(player_id)}'
-            """
+        if war and value:
+            query = f"""
+                UPDATE players
+                SET war={war},
+                    value={value}
+                WHERE player_id='{str(player_id)}'
+                """
+        else:
+            pass
         # Update players one by one
         cursor.execute(query)
 
