@@ -1,8 +1,8 @@
 import pandas as pd
 
-old_league_roster = "./data/rosters_predraft_20220612.csv"
-new_league_roster = "./data/rostersinitialized20220714.csv"
-output_filepath = "./data/rosters_increased_salaries_2022.csv"
+old_league_roster = "./data/rosters_predraft_20220619.csv"
+new_league_roster = "./data/rosters_postdraft_20220619.csv"
+output_filepath = "./data/rosters_postdraft_rookies_20220619.csv"
 
 # Import files
 league_new = pd.read_csv(new_league_roster, index_col=0)
@@ -50,6 +50,6 @@ def salary_increase(salary):
         raise Exception
 
 
-merged["salary"] = merged["salary"].apply(salary_increase)
+# merged["salary"] = merged["salary"].apply(salary_increase)
 
 merged.to_csv(output_filepath, index=None)

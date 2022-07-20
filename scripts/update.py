@@ -309,12 +309,16 @@ def check_compilance():
         team_name = teamsdf['display_name'][n]
 
         # Get players for this roster
-        query = f"SELECT * FROM players WHERE roster_id='{id}' AND injured_reserve='f'"
+        query = f"SELECT * FROM players WHERE roster_id='{id}'"
         teamdf = pgt.df_from_postgres(query, db, 'settings')
 
-        salary_total = teamdf['salary'].sum()
-        players_total = len(teamdf)
+        # Get roster totals without injured_reserve
+        roster_df = teamdf[teamdf['injured_reserve']=='f']
+        players_total = len(roster_df)
 
+        # Get salary total from all players, including injured_reserve
+        salary_total = teamdf['salary'].sum()
+    
         print(f"SALARY: cap: {cap}, total: {salary_total}")
         print(f"PLAYER TOTAL: min: {rosterMin}, max: {rosterMax}, roster: {players_total}")
 
