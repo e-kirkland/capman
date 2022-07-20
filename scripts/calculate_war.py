@@ -252,6 +252,8 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
     positions_keep = ["QB", "RB", "WR", "RB"]
     player_df = player_df[player_df["position"].isin(positions_keep)]
 
+    print("PLAYER DF INFO: ", player_df.info())
+
     # Calculate WAR for all players
     player_df["war"] = player_df.apply(
         lambda x: calculate_war(
@@ -265,6 +267,8 @@ def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
         ),
         axis=1,
     )
+
+    print("PLAYER DF INFO POST WAR: ", player_df.info())
 
     player_df = player_df.dropna(subset=["war", "sleeper_id"])
     player_df = player_df.sort_values(by=["war"], ascending=False)
