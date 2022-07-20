@@ -255,7 +255,6 @@ def simulate_avg_points(avg_df, n_iter=10000):
 def calculate_all_players_war(merged, avg_df, avg_team_mean, avg_team_std):
 
     # Dropping existing war and value
-    merged = merged.drop(columns=["war", "value"])
     print("MERGED PRE WAR: ", merged.info())
 
     # Get dataframe to calculate war
