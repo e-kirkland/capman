@@ -300,6 +300,7 @@ def calculate_value(salary, war):
 def update_league_war(years=[2021, 2020, 2019]):
 
     player_df = calculate_league_war(years)
+    player_df = player_df.drop("position")
 
     print("PLAYER_DF: ", player_df.head(20))
 
