@@ -399,7 +399,9 @@ def update_league_war():
     for n in range(0, len(current_players)):
         player_id = current_players["player_id"][n]
         war = current_players["war"][n]
+        war = "{:.2f}".format(war)
         value = current_players["value"][n]
+        value = "{:.3f}".format(value)
         if war and value:
             query = f"""
                 UPDATE players
