@@ -20,7 +20,7 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['display_name','player', 'position', 'team', 'salary', 'war', 'value']
+const fields = ['display_name', 'player', 'position', 'team', 'salary', 'war', 'value']
 
 
 const TeamTable = () => {
@@ -29,20 +29,20 @@ const TeamTable = () => {
   const [salaryCap, setSalaryCap] = useState(0);
   const [teamCap, setTeamCap] = useState(0);
   const [teamCount, setTeamCount] = useState(0);
-  const [rosterMax, setRosterMax] = useState(0);  
+  const [rosterMax, setRosterMax] = useState(0);
 
   // Fetching summary data for selected waiver
   const fetchAllData = async () => {
-    
+
     let url = process.env.REACT_APP_API + '/getPlayers'
     console.log("URL: ", url)
     let summary = await fetch(url)
-                      .then(res => res.json());
+      .then(res => res.json());
 
     let summaryArray = Object.values(summary);
 
     // filter Array to objects in team of interest
-    let teamArray = summaryArray.filter(item => item.display_name==='isaacwesley')
+    let teamArray = summaryArray.filter(item => item.display_name === 'isaacwesley')
     console.log("ACWORTH SUMMARY ARRAY: ", teamArray);
     setPlayerData(teamArray);
     return teamArray
@@ -50,23 +50,23 @@ const TeamTable = () => {
 
   // Fetching summary data for selected waiver
   const fetchLeagueData = async () => {
-    
+
     let url = process.env.REACT_APP_API + '/capStatus'
     console.log("URL: ", url)
     let summary = await fetch(url)
-                      .then(res => res.json());
+      .then(res => res.json());
 
     let summaryArray = Object.values(summary);
     console.log("SUMMARY ARRAY: ", summaryArray);
     let leagueCapJSON = summaryArray[0]
     let salaries = []
     let rosterNums = []
-    leagueCapJSON.forEach(function(item){
+    leagueCapJSON.forEach(function (item) {
       let salary = item['current_salary']
       let num = item['current_players']
       rosterNums.push(num)
       salaries.push(salary)
-      })
+    })
 
     let teamData = leagueCapJSON.find(o => o.display_name === 'isaacwesley')
     setTeamCap(teamData['current_salary'])
@@ -86,7 +86,7 @@ const TeamTable = () => {
 
   return (
     <>
-      <WidgetsBrand withCharts teamCap={teamCap} teamCount={teamCount} salaryCap={salaryCap} rosterMax={rosterMax}/>
+      <WidgetsBrand withCharts teamCap={teamCap} teamCount={teamCount} salaryCap={salaryCap} rosterMax={rosterMax} />
       <CRow>
         <CCol>
           <CCard>
@@ -94,32 +94,33 @@ const TeamTable = () => {
               ACWORTH EAGLES
             </CCardHeader>
             <CCardBody>
-            <CDataTable
-              items={playerData}
-              fields={fields}
-              hover
-              striped
-              bordered
-              size="sm"
-              itemsPerPage={100}
-              // pagination
-              scopedSlots = {{
-                'status':
-                  (item)=>(
-                    <td>
-                      <CBadge color={getBadge(item.status)}>
-                        {item.status}
-                      </CBadge>
-                    </td>
-                  )
-              }}
-            />
+              <CDataTable
+                items={playerData}
+                fields={fields}
+                sorter
+                hover
+                striped
+                bordered
+                size="sm"
+                itemsPerPage={100}
+                // pagination
+                scopedSlots={{
+                  'status':
+                    (item) => (
+                      <td>
+                        <CBadge color={getBadge(item.status)}>
+                          {item.status}
+                        </CBadge>
+                      </td>
+                    )
+                }}
+              />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
 
-      
+
     </>
   )
 }

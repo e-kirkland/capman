@@ -97,6 +97,7 @@ const TeamTable = () => {
               <CDataTable
                 items={playerData}
                 fields={fields}
+                sorter
                 hover
                 striped
                 bordered

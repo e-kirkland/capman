@@ -70,10 +70,10 @@ const AllPlayers = () => {
               <CDataTable
                 items={playerData}
                 fields={fields}
+                sorter
                 hover
                 striped
                 bordered
-                sorter
                 size="sm"
                 itemsPerPage={100}
                 // pagination
