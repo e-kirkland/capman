@@ -73,6 +73,7 @@ const AllPlayers = () => {
                 hover
                 striped
                 bordered
+                sorter
                 size="sm"
                 itemsPerPage={100}
                 // pagination
