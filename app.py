@@ -597,6 +597,7 @@ def serve():
     return send_from_directory(app.static_folder, "index.html")
 
 
+@app.route("/api/checkCompliance", methods=["GET"])
 def check_transactions():
     print("Checking transactions! The time is: %s" % datetime.now())
     result = check_transaction()
