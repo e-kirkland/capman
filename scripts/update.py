@@ -320,7 +320,7 @@ def check_compilance():
         print(teamdf["injured_reserve"].head())
 
         # Get roster totals without injured_reserve
-        roster_df = teamdf[teamdf["injured_reserve"] == "f"]
+        roster_df = teamdf[teamdf["injured_reserve"] == False]
         players_total = len(roster_df)
 
         # Get salary total from all players, including injured_reserve
