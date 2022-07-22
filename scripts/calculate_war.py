@@ -238,7 +238,7 @@ def calculate_average_team(merged, years=[2021, 2020, 2019]):
     df_list.append(["WR2", wr2_mean, wr2_std, 10])
 
     te_mean, te_std = calculate_mean_std(
-        merged, position=["TE"], years=[2019, 2020, 2021], k=10
+        merged, position=["TE"], years=[2019, 2020, 2021], k=32
     )
     df_list.append(["TE", te_mean, te_std, 10])
 
@@ -425,5 +425,5 @@ def update_league_war():
 if __name__ == "__main__":
 
     player_df = calculate_league_war(years=[2021, 2020, 2019])
-    print(player_df.head(20))
+    print(player_df.head(100))
 
