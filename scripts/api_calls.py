@@ -468,7 +468,9 @@ def get_all_players():
 
     df_players = pgt.df_from_postgres(query, db, "players")
 
-    df_players = df_players.fillna("None")
+    df_players = df_players.fillna("")
+
+    df_players['war'] = pd.to_numeric(df_players['war'])
 
     df_json = df_players.to_json(orient="records")
 
