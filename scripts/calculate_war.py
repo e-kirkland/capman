@@ -12,7 +12,7 @@ import scipy.stats as st
 from dotenv import load_dotenv
 
 # Local Imports
-# from scripts import postgres_tools as pgt
+from scripts import postgres_tools as pgt
 
 
 def compile_offensive_points(
@@ -144,28 +144,28 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     )
     yearly = yearly.drop(columns=["Freq"])
 
-    # # Getting tokens from env
-    # dotenv_path = join(dirname(__file__), "../.env")
-    # load_dotenv(dotenv_path)
-    # db = os.environ.get("POSTGRES_DB")
-    # print("DATABASE TO CONNECT TO: ", db)
+    # Getting tokens from env
+    dotenv_path = join(dirname(__file__), "../.env")
+    load_dotenv(dotenv_path)
+    db = os.environ.get("POSTGRES_DB")
+    print("DATABASE TO CONNECT TO: ", db)
 
-    # # Ingest data from sleeper league
-    # query = f"""SELECT player_id,
-    #                    player,
-    #                    team,
-    #                    salary,
-    #                    roster_id,
-    #                    injured_reserve
-    #               FROM players;"""
-    # fantasy_players = pgt.df_from_postgres(query, db, "players")
+    # Ingest data from sleeper league
+    query = f"""SELECT player_id,
+                       player,
+                       team,
+                       salary,
+                       roster_id,
+                       injured_reserve
+                  FROM players;"""
+    fantasy_players = pgt.df_from_postgres(query, db, "players")
 
-    fantasy_players = pd.read_csv(
-        "/Users/williamkirkland/Data/KDS/capman/data/rosters_postdraft_rookies_20220619_1.csv"
-    )
+    # fantasy_players = pd.read_csv(
+    #     "/Users/williamkirkland/Data/KDS/capman/data/rosters_postdraft_rookies_20220619_1.csv"
+    # )
 
-    fantasy_players = fantasy_players.dropna(subset=["player"])
-    fantasy_players = fantasy_players.drop(columns=["position"])
+    # fantasy_players = fantasy_players.dropna(subset=["player"])
+    # fantasy_players = fantasy_players.drop(columns=["position"])
 
     # Merge data from sleeper league
     fantasy_players = fantasy_players.rename(
