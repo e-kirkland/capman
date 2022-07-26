@@ -304,6 +304,13 @@ def calculate_league_war(years=[2021, 2020, 2019]):
 
     # Reducing player point calculations to previous 20 games
     merged = merged.sort_values(by=["season", "week"], ascending=False)
+    merged["player_count"] = merged.groupby("sleeper_id")["sleeper_id"].transform(
+        "count"
+    )
+
+    # Reducing to players with more than 5 games to consider
+    merged = merged[merged["player_count"] >= 5]
+    merged = merged.drop(columns=["player_count"])
     merged = merged.groupby("sleeper_id").head(20).reset_index(drop=True)
 
     player_df = calculate_all_players_war(
