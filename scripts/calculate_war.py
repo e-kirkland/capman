@@ -264,9 +264,6 @@ def calculate_all_players_war(merged, player_df, avg_df, avg_team_mean, avg_team
     print("MERGED PRE WAR: ", merged.info())
 
     # Get dataframe to calculate war
-    # player_df = pd.DataFrame(
-    #     merged.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
-    # )
     keepcols = ["sleeper_id", "position"]
     player_df = player_df[keepcols]
     positions_keep = ["QB", "RB", "WR", "TE"]
@@ -305,8 +302,9 @@ def calculate_league_war(years=[2021, 2020, 2019]):
 
     avg_team_mean, avg_team_std = simulate_avg_points(avg_df, n_iter=10000)
 
-    # Reducing player point calculations to previous year
-    merged = merged[merged["season"] == np.max(years)]
+    # Reducing player point calculations to previous 20 games
+    merged = merged.sort_values(by=["season", "week"], ascending=False)
+    merged = merged.groupby("sleeper_id").head(20).reset_index(drop=True)
 
     player_df = calculate_all_players_war(
         merged, player_df, avg_df, avg_team_mean, avg_team_std
