@@ -367,6 +367,8 @@ def reset_salary_data(fname):
             "salary",
             "roster_id",
             "injured_reserve",
+            "war",
+            "value",
         ]
         df = df[keepcols]
 
