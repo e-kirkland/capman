@@ -622,6 +622,7 @@ def check_transactions():
 # Instantiating scheduler
 sched = BackgroundScheduler(daemon=True)
 sched.add_job(check_transactions, "interval", minutes=30)
+sched.add_job(get_war, "interval", hours=24)
 sched.start()
 
 # Running app when called from python or gunicorn
