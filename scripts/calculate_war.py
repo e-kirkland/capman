@@ -182,6 +182,11 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
         fantasy_players, how="left", left_on="sleeper_id", right_on="sleeper_id"
     )
 
+    # Fixing position column, keeping current positions from postgres
+    merged = merged.drop(columns=["position_x"]).rename(
+        columns={"position_y": "position"}
+    )
+
     # Getting single record for each sleeper_id and position
     player_single_record = pd.DataFrame(
         rosters.groupby(["sleeper_id", "position"]).size().reset_index(name="Freq")
