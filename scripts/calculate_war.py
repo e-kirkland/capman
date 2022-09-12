@@ -129,6 +129,8 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     # Download roster values for years
     rosters = nfl.import_rosters(years)
 
+    print("ROSTERS: ", rosters.info())
+
     player_merge_table = pd.DataFrame(
         rosters.groupby(["player_name", "position", "player_id", "sleeper_id"])
         .size()
@@ -138,11 +140,15 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     # Download yearly data from nfl_data_py
     yearly = nfl.import_weekly_data(years, downcast=True)
 
+    print("YEARLY: ", yearly.info())
+
     yearly = yearly.drop(columns=["player_name"])
     yearly = yearly.merge(
         player_merge_table, how="left", left_on="player_id", right_on="player_id"
     )
     yearly = yearly.drop(columns=["Freq"])
+
+    print("YEARLY AND PLAYERS: ", yearly.info())
 
     # Getting tokens from env
     dotenv_path = join(dirname(__file__), "../.env")
@@ -160,6 +166,8 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
                   FROM players;"""
     fantasy_players = pgt.df_from_postgres(query, db, "players")
 
+    print("FANTASY_PLAYERS: ", fantasy_players.info())
+
     # fantasy_players = pd.read_csv(
     #     "/Users/williamkirkland/Data/KDS/capman/data/rosters_postdraft_rookies_20220619_1.csv"
     # )
@@ -175,6 +183,8 @@ def create_merged_player_df(years=[2021, 2020, 2019]):
     merged = yearly.merge(
         fantasy_players, how="left", left_on="sleeper_id", right_on="sleeper_id"
     )
+
+    print("MERGED: ", merged.info())
 
     # Getting single record for each sleeper_id and position
     player_single_record = pd.DataFrame(
