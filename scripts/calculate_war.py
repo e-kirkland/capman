@@ -54,6 +54,7 @@ def calculate_mean_std(df, position, years, k=12, start=0):
     except KeyError as e:
         print("KEY ERROR: ", position)
         print("KEY ERROR DF: ", df.head())
+        print("KEY ERROR DF COLUMNS: ", df.columns)
         raise e
 
     avg_year = pos_df.groupby(["player_name", "season"])["total_points"].mean()
@@ -217,34 +218,22 @@ def calculate_average_team(merged, years=[2021, 2020, 2019]):
 
     df_list = []
 
-    qb_mean, qb_std = calculate_mean_std(
-        merged, position=["QB"], years=years, k=32
-    )
+    qb_mean, qb_std = calculate_mean_std(merged, position=["QB"], years=years, k=32)
     df_list.append(["QB", qb_mean, qb_std, 10])
 
-    rb_mean, rb_std = calculate_mean_std(
-        merged, position=["RB"], years=years, k=64
-    )
+    rb_mean, rb_std = calculate_mean_std(merged, position=["RB"], years=years, k=64)
     df_list.append(["RB", rb_mean, rb_std, 10])
 
-    rb2_mean, rb2_std = calculate_mean_std(
-        merged, position=["RB"], years=years, k=64
-    )
+    rb2_mean, rb2_std = calculate_mean_std(merged, position=["RB"], years=years, k=64)
     df_list.append(["RB2", rb2_mean, rb2_std, 10])
 
-    wr_mean, wr_std = calculate_mean_std(
-        merged, position=["WR"], years=years, k=64
-    )
+    wr_mean, wr_std = calculate_mean_std(merged, position=["WR"], years=years, k=64)
     df_list.append(["WR", wr_mean, wr_std, 10])
 
-    wr2_mean, wr2_std = calculate_mean_std(
-        merged, position=["WR"], years=years, k=32
-    )
+    wr2_mean, wr2_std = calculate_mean_std(merged, position=["WR"], years=years, k=32)
     df_list.append(["WR2", wr2_mean, wr2_std, 10])
 
-    te_mean, te_std = calculate_mean_std(
-        merged, position=["TE"], years=years, k=32
-    )
+    te_mean, te_std = calculate_mean_std(merged, position=["TE"], years=years, k=32)
     df_list.append(["TE", te_mean, te_std, 10])
 
     avg_df = pd.DataFrame(df_list, columns=["position", "mean", "std", "n"])
