@@ -307,8 +307,8 @@ def calculate_league_war(years=[2021, 2020, 2019]):
         "count"
     )
 
-    # Reducing to players with more than 5 games to consider
-    merged = merged[merged["player_count"] >= 5]
+    # Reducing to players with more than 4 games to consider
+    merged = merged[merged["player_count"] >= 4]
     merged = merged.drop(columns=["player_count"])
     merged = merged.groupby("sleeper_id").head(20).reset_index(drop=True)
 
@@ -335,17 +335,19 @@ def calculate_value(salary, war):
         return 0.0
 
 
-def get_year_dates():
+def get_year_dates(num_years=3):
 
     cur_year = int(datetime.datetime.now().strftime("%Y"))
-    four_years = [cur_year, cur_year - 1, cur_year - 2, cur_year - 3]
+    all_years = []
+    for n in range(0, num_years):
+        all_years.append(cur_year - n)
 
-    return four_years
+    return all_years
 
 
 def update_league_war():
 
-    years = get_year_dates()
+    years = get_year_dates(num_years=2)
     print("YEARS TO ANALYZE: ", years)
 
     player_df = calculate_league_war(years)
