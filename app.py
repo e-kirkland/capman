@@ -97,7 +97,7 @@ def file_upload(payload):
         try:
 
             user_client = slack.WebClient(token=user_token)
-            print("MAKING API CALL...")
+            print("MAKING API CALL USING FILE: ", file)
             result = user_client.api_call(
                 "files.sharedPublicURL", params={"file": file, "channel": channel}
             )
