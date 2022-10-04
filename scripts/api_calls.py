@@ -457,7 +457,7 @@ def get_all_players():
                       p.value
                  FROM players p
       LEFT OUTER JOIN rosters r
-                   ON p.roster_id=r.roster_id
+                   ON p.roster_id::varchar(255)=r.roster_id::varchar(255)
              ORDER BY p.roster_id,
                       CASE WHEN position='QB' THEN 1
                            WHEN position='RB' THEN 2
