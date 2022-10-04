@@ -104,10 +104,10 @@ def file_upload(payload):
                 "files.info", params={"file": file, "token": user_token}
             )
             print("FILE INFO RESULT: ", result["file"]["url_private_download"])
-            result = user_client.api_call(
-                "files.sharedPublicURL", params={"file": file, "channel": channel}
-            )
-            print("RESULT: ", result)
+            # result = user_client.api_call(
+            #     "files.sharedPublicURL", params={"file": file, "channel": channel}
+            # )
+            # print("RESULT: ", result)
 
             url = result["file"]["url_private_download"]
             print("URL: ", url)
