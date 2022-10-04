@@ -100,6 +100,8 @@ def file_upload(payload):
             print("USER TOKEN: ", user_token)
             print("USER_CLIENT: ", user_client)
             print("MAKING API CALL USING FILE: ", file)
+            result = user_client.api_call("api.test", params={})
+            print("TEST RESULT: ", result)
             result = user_client.api_call(
                 "files.sharedPublicURL", params={"file": file, "channel": channel}
             )
