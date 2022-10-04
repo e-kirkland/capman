@@ -410,7 +410,7 @@ def update_league_war():
         war = current_players["war"][n]
         value = current_players["value"][n]
 
-        if war != np.NaN and value != np.NaN:
+        if war != np.NaN and value != np.NaN and war != "nan":
             war = "{:.2f}".format(war)
             value = "{:.3f}".format(value)
             query = f"""
