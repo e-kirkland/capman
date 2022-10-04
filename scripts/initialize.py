@@ -40,8 +40,8 @@ def setup_database():
         salary      INTEGER,
         roster_id   VARCHAR,
         injured_reserve BOOLEAN,
-        war         DECIMAL,
-        value       DECIMAL
+        war         REAL,
+        value       REAL
     )
     """,
         """

@@ -410,13 +410,13 @@ def update_league_war():
         war = current_players["war"][n]
         value = current_players["value"][n]
 
-        if type(war) == int or type(war) == float:
-            war = "{:.2f}".format(float(war))
-            value = "{:.3f}".format(float(value))
+        if war != np.NaN and value != np.NaN:
+            war = "{:.2f}".format(war)
+            value = "{:.3f}".format(value)
             query = f"""
                 UPDATE players
-                SET war={war},
-                    value={value}
+                SET war='{war}',
+                    value='{value}'
                 WHERE player_id='{str(player_id)}'
                 """
         else:
