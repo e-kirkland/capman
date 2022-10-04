@@ -38,6 +38,12 @@ def get_players():
         # Storing placeholders for salary
         playerdf["salary"] = 0
 
+        # Storing placeholder for war
+        playerdf["war"] = 0.0
+
+        # Storing placeholder for value
+        playerdf["value"] = 0.0
+
         return playerdf
 
     except Exception as e:
