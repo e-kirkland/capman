@@ -38,6 +38,9 @@ def get_players():
         # Storing placeholders for salary
         playerdf["salary"] = 0
 
+        # Storing placeholders for injured_reserve
+        playerdf['injured_reserve'] = False
+
         # Storing placeholder for war
         playerdf["war"] = 0.0
 
