@@ -57,6 +57,8 @@ def update_from_transctions(transactions, lastTransaction):
         x for x in transactions if int(x["transaction_id"]) > int(lastTransaction)
     ]
 
+    print("NEW TRANSACTIONS FOUND: ", len(new_transactions))
+
     # Sorting transactions in ascending order, so we execute each one in order
     new_transactions = sorted(new_transactions, key=lambda i: (i["transaction_id"]))
 
