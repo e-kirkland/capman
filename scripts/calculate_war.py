@@ -307,8 +307,8 @@ def calculate_league_war(years=[2021, 2020, 2019]):
         "count"
     )
 
-    # Reducing to players with more than 4 games to consider
-    merged = merged[merged["player_count"] >= 4]
+    # Reducing to players with more than 3 games to consider
+    merged = merged[merged["player_count"] >= 3]
     merged = merged.drop(columns=["player_count"])
     merged = merged.groupby("sleeper_id").head(20).reset_index(drop=True)
 
