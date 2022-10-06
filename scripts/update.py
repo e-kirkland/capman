@@ -107,15 +107,11 @@ def update_from_transctions(transactions, lastTransaction):
                         # Update players one by one
                         cursor.execute(query)
             else:
-                # Close communication
-                cursor.close()
-                # Commit changes
-                conn.commit()
-                print("TRANSACTIONS_COMPLETED: ", new_transactions)
+                print("WAIVER TRANSACTION UNSUCCESSFUL, BYPASSING...")
                 continue
 
         # Free Agent transactions
-        if transaction["type"] == "free_agent":
+        elif transaction["type"] == "free_agent":
             adds = transaction["adds"]
             drops = transaction["drops"]
 
