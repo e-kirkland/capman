@@ -112,7 +112,7 @@ def update_from_transctions(transactions, lastTransaction):
                 # Commit changes
                 conn.commit()
                 print("TRANSACTIONS_COMPLETED: ", new_transactions)
-                return
+                continue
 
         # Free Agent transactions
         if transaction["type"] == "free_agent":
