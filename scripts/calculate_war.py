@@ -347,7 +347,7 @@ def get_year_dates(num_years=3):
 
 def update_league_war():
 
-    years = get_year_dates(num_years=2)
+    years = get_year_dates(num_years=1)
     print("YEARS TO ANALYZE: ", years)
 
     player_df = calculate_league_war(years)
