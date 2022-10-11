@@ -39,7 +39,7 @@ user_token = os.environ.get("SLACK_USER_TOKEN")
 secret = os.environ.get("SLACK_SECRET")
 alert_channel = os.environ.get("ALERT_CHANNEL")
 
-print("TOKENS: ", bot_token, user_token, secret)
+print("TOKENS: ", bot_token, user_token, secret, alert_channel)
 
 # Instantiating slackbot
 slack_event_adapter = SlackEventAdapter(secret, "/slack/events", app)
